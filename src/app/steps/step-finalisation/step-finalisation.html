@@ -1,0 +1,208 @@
+<div class="glass-card">
+  <div class="finalisation">
+    <div class="header">
+      <h2>🎯 Finalisation</h2>
+      <p>Votre CV est presque prêt !</p>
+    </div>
+  
+    <div class="completion-card">
+      <div class="completion-header">
+        <h3>Taux de complétion</h3>
+        <div class="progress-circle">
+          <svg viewBox="0 0 36 36">
+            <path class="bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            <path class="fill" [attr.stroke-dasharray]="getCompletionRate() + ', 100'" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            <text x="18" y="20.35">{{ getCompletionRate() }}%</text>
+          </svg>
+        </div>
+      </div>
+  
+      <div *ngIf="getMissingItems().length > 0" class="warning">
+        <div class="warning-header">
+          <span class="animated-icon">⚠️</span>
+          <h4>Éléments manquants :</h4>
+        </div>
+        <ul>
+          <li *ngFor="let item of getMissingItemsWithStep()" (click)="goToStep(item.step)">
+            {{ item.name }}
+          </li>
+        </ul>
+      </div>
+  
+      <div *ngIf="getMissingItems().length > 0" class="advice-message">
+        <p>💡 Nous vous recommandons de compléter ces informations pour un CV plus percutant.</p>
+      </div>
+  
+      <div *ngIf="getMissingItems().length === 0 || (isCVCompleteWithoutPhoto() && !isCVComplete())" class="success">
+        {{ getSuccessMessage() }}
+        
+        <div *ngIf="isPhotoMissing() && !isCVComplete() && photoChoice !== 'no'" class="photo-suggestion">
+          <div class="suggestion-content">
+            <span class="suggestion-icon">📸</span>
+            <p>Ajouter une photo peut rendre votre CV plus personnel et professionnel.</p>
+            <div class="suggestion-buttons">
+              <button class="btn-add-photo" (click)="suggestPhoto()">
+                ➕ Ajouter une photo
+              </button>
+              <button class="btn-skip-photo" (click)="skipPhoto()">
+                ⏭️ Ignorer
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div *ngIf="photoChoice === 'no'" class="photo-skipped">
+          <span class="info-icon">ℹ️</span>
+          <p>Vous pouvez toujours ajouter une photo plus tard depuis l'étape 5.</p>
+        </div>
+      </div>
+    </div>
+  
+    <div class="actions">
+      <h3>Actions</h3>
+      <div class="buttons">
+        <button class="btn-preview" (click)="preview.emit()">
+          👁️ Aperçu du CV
+        </button>
+        <button class="btn-print" (click)="print.emit()">
+          ⬇️ Télécharger
+        </button>
+        <button class="btn-export" (click)="exportJSON.emit()">
+          📥 Exporter en JSON
+        </button>
+        <button class="btn-reset" (click)="reset.emit()">
+          🔄 Réinitialiser
+        </button>
+      </div>
+    </div>
+  
+    <div class="summary">
+      <h3>Récapitulatif</h3>
+      <div class="summary-grid">
+        <div class="summary-item">
+          <span class="label">👤 Nom complet</span>
+          <span class="value">{{ cvData.personalInfo.prenom || 'Non renseigné' }} {{ cvData.personalInfo.nom || '' }}</span>
+        </div>
+        <div class="summary-item">
+          <span class="label">📧 Email</span>
+          <span class="value">{{ cvData.personalInfo.email || 'Non renseigné' }}</span>
+        </div>
+        <div class="summary-item">
+          <span class="label">💼 Expériences</span>
+          <span class="value">{{ cvData.experiences.length || 0 }} poste(s)</span>
+        </div>
+        <div class="summary-item">
+          <span class="label">🎓 Formations</span>
+          <span class="value">{{ cvData.formations.length || 0 }} diplôme(s)</span>
+        </div>
+        <div class="summary-item">
+          <span class="label">⚡ Compétences</span>
+          <span class="value">{{ cvData.competences.length || 0 }} compétence(s)</span>
+        </div>
+        <div class="summary-item">
+          <span class="label">🌍 Langues</span>
+          <span class="value">{{ cvData.langues.length || 0 }} langue(s)</span>
+        </div>
+        <div class="summary-item">
+          <span class="label">📸 Photo</span>
+          <span class="value" [class.missing]="!cvData.photo">
+            {{ cvData.photo ? '✅ Ajoutée' : '❌ Non ajoutée' }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal avec prévisualisation et recadrage -->
+<div class="modal-overlay" *ngIf="showPhotoModal" (click)="closePhotoModal()">
+  <div class="modal-container modal-large" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <span class="modal-icon">📸</span>
+      <h3>Ajouter une photo de profil</h3>
+      <button class="modal-close" (click)="closePhotoModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <p>Une photo professionnelle peut augmenter l'impact de votre CV et le rendre plus personnel.</p>
+      
+      <!-- Étape 1: Sélection de l'image -->
+      <div *ngIf="!selectedImage" class="photo-upload-area" (click)="openFileSelector()">
+        <div class="upload-icon">📷</div>
+        <p>Cliquez pour choisir une photo</p>
+        <small>Format : JPG, PNG (max 5MB)</small>
+      </div>
+      
+      <!-- Étape 2: Prévisualisation et recadrage -->
+      <div *ngIf="selectedImage && originalImage" class="photo-editor">
+        <div class="editor-header">
+          <h4>📐 Recadrer votre photo</h4>
+          <button class="btn-change-image" (click)="resetAndChooseNew()">Changer d'image</button>
+        </div>
+        
+        <div class="editor-container">
+          <div class="canvas-container">
+            <canvas #imageCanvas class="image-canvas" 
+                    width="300"
+                    height="300"
+                    (mousedown)="startDrag($event)"
+                    (mousemove)="onDrag($event)"
+                    (mouseup)="endDrag()"
+                    (mouseleave)="endDrag()"
+                    (wheel)="onZoom($event)">
+            </canvas>
+            <div class="drag-hint">✋ Glissez pour déplacer</div>
+          </div>
+          
+          <div class="editor-controls">
+            <div class="control-group">
+              <label>🔍 Zoom</label>
+              <input type="range" 
+                     [(ngModel)]="zoomLevel" 
+                     (input)="updateZoom()"
+                     min="0.5" 
+                     max="2.5" 
+                     step="0.01">
+              <span class="zoom-value">{{ (zoomLevel * 100).toFixed(0) }}%</span>
+            </div>
+            
+            <div class="control-group">
+              <label>🎯 Recadrage</label>
+              <div class="crop-buttons">
+                <button class="crop-btn" (click)="resetCrop()" title="Réinitialiser">⟳</button>
+                <button class="crop-btn" (click)="autoFit()" title="Ajuster au cadre">⛶</button>
+                <button class="crop-btn" (click)="rotateImage()" title="Rotation">↻</button>
+              </div>
+            </div>
+            
+            <div class="preview-result">
+              <div class="preview-label">Aperçu final (150x150px)</div>
+              <div class="final-preview" [style.backgroundImage]="'url(' + croppedImagePreview + ')'"></div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="modal-tips">
+          <span class="tip">✨ Photo récente</span>
+          <span class="tip">✨ Fond neutre</span>
+          <span class="tip">✨ Tenue professionnelle</span>
+        </div>
+      </div>
+      
+      <input 
+        type="file" 
+        #fileInput 
+        accept="image/jpeg,image/png,image/jpg"
+        (change)="onPhotoSelected($event)"
+        style="display: none">
+    </div>
+    <div class="modal-footer" *ngIf="selectedImage && originalImage">
+      <button class="btn-modal-skip" (click)="cancelPhoto()">Annuler</button>
+      <button class="btn-modal-add" (click)="confirmPhoto()">
+        ✅ Valider cette photo
+      </button>
+    </div>
+    <div class="modal-footer" *ngIf="!selectedImage">
+      <button class="btn-modal-skip" (click)="skipPhoto()">Non, merci</button>
+    </div>
+  </div>
+</div>

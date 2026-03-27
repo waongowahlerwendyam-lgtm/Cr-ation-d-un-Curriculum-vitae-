@@ -1,0 +1,437 @@
+.step3 {
+  padding: 30px;
+  background: transparent;
+
+  .header {
+    margin-bottom: 30px;
+    text-align: left;
+
+    h2 { 
+      color: #ffffff !important; 
+      margin-bottom: 8px; 
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+    
+    p { 
+      color: rgba(255, 255, 255, 0.9) !important; 
+    }
+  }
+
+  .tabs {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+    justify-content: center;
+
+    button {
+      flex: 1;
+      max-width: 200px;
+      padding: 12px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      border-radius: 12px;
+      border: none;
+      background: rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.6);
+      
+      &.active {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+      }
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.25);
+        color: white;
+        transform: translateY(-2px);
+      }
+    }
+  }
+
+  .form-card {
+    background: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(8px);
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    h3 { 
+      margin-bottom: 15px; 
+      color: #ffffff !important;
+      font-size: 1.2rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+
+      input, textarea, select {
+        padding: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 8px;
+        font-size: 0.9rem;
+        background: rgba(255, 255, 255, 0.2) !important;
+        color: #ffffff !important;
+        
+        &::placeholder {
+          color: rgba(255, 255, 255, 0.6);
+        }
+        
+        &:focus {
+          outline: none;
+          border-color: #ffd700;
+          background: rgba(255, 255, 255, 0.3) !important;
+        }
+      }
+
+      textarea { 
+        grid-column: span 2;
+        resize: vertical;
+        min-height: 80px;
+      }
+      
+      .checkbox { 
+        grid-column: span 2; 
+        display: flex; 
+        align-items: center; 
+        gap: 8px;
+        color: #ffffff !important;
+        
+        input {
+          width: auto;
+          margin-right: 5px;
+        }
+      }
+
+      .btn-add {
+        grid-column: span 2;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        padding: 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s;
+        font-size: 1rem;
+
+        &:hover { 
+          transform: translateY(-2px); 
+          box-shadow: 0 5px 15px rgba(102,126,234,0.3);
+        }
+      }
+    }
+  }
+
+  .items-list {
+    background: transparent !important;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    .item-card {
+      background: rgba(255, 255, 255, 0.1) !important;
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      padding: 15px;
+      transition: all 0.3s;
+
+      &:hover { 
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        background: rgba(255, 255, 255, 0.15) !important;
+      }
+
+      .item-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+
+        h4 { 
+          color: #ffd700 !important; 
+          font-size: 1.1rem;
+          margin: 0;
+        }
+
+        .actions button {
+          background: none;
+          border: none;
+          cursor: pointer;
+          font-size: 1.2rem;
+          margin-left: 8px;
+          transition: transform 0.2s;
+          padding: 5px;
+
+          &:hover { 
+            transform: scale(1.1);
+          }
+        }
+      }
+
+      .item-sub { 
+        color: #ffd700 !important; 
+        font-weight: 500; 
+        margin-bottom: 5px;
+        opacity: 0.9;
+      }
+      
+      .item-date { 
+        color: rgba(255, 255, 255, 0.7); 
+        font-size: 0.8rem; 
+        margin-bottom: 10px;
+      }
+      
+      p { 
+        color: rgba(255, 255, 255, 0.9); 
+        line-height: 1.5;
+        margin: 0;
+      }
+
+      .edit-form {
+        background: transparent !important;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        label {
+          color: rgba(255, 255, 255, 0.8);
+          font-size: 0.75rem;
+          margin-bottom: 2px;
+        }
+
+        input, textarea {
+          padding: 10px;
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          border-radius: 6px;
+          background: rgba(255, 255, 255, 0.2) !important;
+          color: #ffffff !important;
+          
+          &:focus {
+            outline: none;
+            border-color: #ffd700;
+          }
+        }
+
+        .edit-actions {
+          display: flex;
+          gap: 10px;
+
+          button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+
+            &.save { 
+              background: #48bb78; 
+              color: white;
+              &:hover { background: #38a169; }
+            }
+            
+            &.cancel { 
+              background: #e53e3e; 
+              color: white;
+              &:hover { background: #c53030; }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Styles pour les labels
+.field-label {
+  display: block;
+  margin-bottom: 6px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+// Full width pour les champs qui doivent prendre toute la largeur
+.full-width {
+  grid-column: span 2;
+}
+
+// Pour la description qui doit prendre toute la largeur
+.form-grid .field-group.full-width textarea {
+  width: 100%;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(12px) !important;
+  border-radius: 1rem !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+// Field group
+.field-group {
+  position: relative;
+  
+  .error {
+    color: #ff6b6b;
+    font-size: 0.7rem;
+    margin-top: 4px;
+    display: block;
+  }
+}
+
+// Pour les inputs en erreur
+input.ng-invalid.ng-touched, 
+textarea.ng-invalid.ng-touched,
+input.error {
+  border-color: #ff6b6b !important;
+}
+
+// ==================== RESPONSIVE ====================
+
+@media (max-width: 768px) {
+  .step3 {
+    padding: 20px;
+    
+    .header {
+      text-align: center;
+      margin-bottom: 25px;
+      
+      h2 {
+        font-size: 1.5rem;
+      }
+      
+      p {
+        font-size: 0.9rem;
+      }
+    }
+    
+    .tabs button {
+      padding: 10px 16px;
+      font-size: 0.9rem;
+      max-width: none;
+    }
+    
+    .form-card .form-grid {
+      grid-template-columns: 1fr;
+      
+      textarea { 
+        grid-column: span 1;
+      }
+      
+      .checkbox { 
+        grid-column: span 1;
+      }
+      
+      .btn-add { 
+        grid-column: span 1;
+      }
+      
+      .full-width {
+        grid-column: span 1;
+      }
+    }
+  }
+}
+
+@media (max-width: 520px) {
+  .step3 {
+    padding: 15px;
+    
+    .header {
+      margin-bottom: 20px;
+      
+      h2 {
+        font-size: 1.3rem;
+      }
+      
+      p {
+        font-size: 0.85rem;
+      }
+    }
+    
+    .tabs {
+      gap: 10px;
+      
+      button {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+      }
+    }
+    
+    .form-card {
+      padding: 15px;
+      
+      h3 {
+        font-size: 1rem;
+      }
+      
+      .form-grid {
+        gap: 10px;
+        
+        input, textarea, select {
+          padding: 8px;
+          font-size: 0.85rem;
+        }
+        
+        .btn-add {
+          padding: 10px;
+          font-size: 0.9rem;
+        }
+      }
+    }
+    
+    .items-list {
+      gap: 12px;
+      
+      .item-card {
+        padding: 12px;
+        
+        .item-header h4 {
+          font-size: 1rem;
+        }
+        
+        .item-sub {
+          font-size: 0.85rem;
+        }
+        
+        p {
+          font-size: 0.85rem;
+        }
+        
+        .edit-form {
+          input, textarea {
+            padding: 8px;
+            font-size: 0.85rem;
+          }
+          
+          .edit-actions button {
+            padding: 6px 12px;
+            font-size: 0.85rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 380px) {
+  .step3 {
+    padding: 12px;
+    
+    .tabs {
+      flex-direction: column;
+      gap: 8px;
+      
+      button {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  }
+}

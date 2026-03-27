@@ -1,1 +1,104 @@
-/* You can add global styles to this file, and also import other style files */
+// Supprimez tout le code en double et gardez ceci :
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+// Image par défaut (pour tous les écrans)
+@media (min-width: 800px) {
+  body {
+    background-image: url("./app/assets/image_back.jpg");
+  }
+}
+
+// Pour les écrans de 780px et moins
+@media (max-width: 800px) {
+  body {
+    background-image: url("./app/assets/back_780.jpg");
+  }
+}
+
+// App-root avec fond transparent
+app-root {
+  display: block;
+  min-height: 100vh;
+  background: transparent !important;
+  margin: 50px;
+}
+
+// Classe glassmorphism pour tous les composants
+.glass-card {
+  background: rgba(255, 255, 255, 0.052) !important;
+  backdrop-filter: blur(12px) !important;
+  border-radius: 1rem !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+}
+
+// Pour rendre tous les conteneurs transparents
+.container, .row, .col, 
+.step-container, .step-content,
+.card, .panel, .form-group {
+  background: transparent !important;
+}
+
+// Style pour le texte (blanc avec ombre pour lisibilité)
+h1, h2, h3, h4, h5, h6, p, label, span, div {
+  color: #ffffff !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+// Inputs et formulaires transparents
+input, textarea, select, .form-control {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  color: white !important;
+  
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.7) !important;
+  }
+  
+  &:focus {
+    background: rgba(255, 255, 255, 0.3) !important;
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.5) !important;
+  }
+}
+
+// Boutons transparents
+button, .btn {
+  background: rgba(6, 56, 164, 0.9) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  color: white !important;
+  
+  &:hover {
+    background: rgba(6, 56, 164, 0.9) !important;
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+  }
+}
+
+// Barre de progression transparente
+.progress {
+  background: rgba(255, 255, 255, 0.2) !important;
+  height: 10px !important;
+  
+  .progress-bar {
+    background: rgba(6, 56, 164, 0.9) !important;
+  }
+}
+
+// Cartes spécifiques à vos étapes
+.step-card, .info-card, .form-card {
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(10px) !important;
+  border-radius: 16px !important;
+  padding: 20px !important;
+  margin-bottom: 20px !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}

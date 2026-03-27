@@ -1,0 +1,124 @@
+<div class="cv-builder">
+  <header class="header">
+    <div class="logo-section">
+      <img src="/assets/favicon_logo.png" alt="logo" class="logo-icon">
+      <div class="logo-info">
+        <h1>Création d'un Curriculum Vitae</h1>
+        <p>Créez votre CV professionnel en 5 étapes</p>
+      </div>
+    </div>
+  </header>
+
+  <app-step-navigation
+    [currentStep]="currentStep"
+    [stepProgress]="stepProgress"
+    [stepValidation]="stepValidation"
+    (stepChange)="goToStep($event)">
+  </app-step-navigation>
+
+  <main class="main">
+    <div class="step-card">
+      <!-- Étape 1 -->
+      <div *ngIf="currentStep === 1">
+        <app-step1-infos
+          [personalInfo]="cvData.personalInfo"
+          (personalInfoUpdate)="updateData(1, { personalInfo: $event })">
+        </app-step1-infos>
+      </div>
+
+      <!-- Étape 2 -->
+      <div *ngIf="currentStep === 2">
+        <app-step2-profil
+          [profile]="cvData.profile"
+          (profileUpdate)="onProfileUpdate($event)">
+        </app-step2-profil>
+      </div>
+
+      <!-- Étape 3 -->
+      <div *ngIf="currentStep === 3">
+        <app-step3-experiences
+          [experiences]="cvData.experiences"
+          [formations]="cvData.formations"
+          (experiencesChange)="updateData(3, { experiences: $event })"
+          (formationsChange)="updateData(3, { formations: $event })">
+        </app-step3-experiences>
+      </div>
+
+      <!-- Étape 4 -->
+      <div *ngIf="currentStep === 4">
+        <app-step4-competences
+          [competences]="cvData.competences"
+          [langues]="cvData.langues"
+          [centresInteret]="cvData.centresInteret"
+          [reseauxSociaux]="cvData.reseauxSociaux"
+          (competencesUpdate)="updateData(4, { competences: $event })"
+          (languesUpdate)="updateData(4, { langues: $event })"
+          (centresInteretUpdate)="updateData(4, { centresInteret: $event })"
+          (reseauxSociauxUpdate)="updateData(4, { reseauxSociaux: $event })">
+        </app-step4-competences>
+      </div>
+
+      <!-- Étape 5 -->
+      <div *ngIf="currentStep === 5">
+        <app-step5-photo-upload
+          [photo]="cvData.photo || ''"
+          (photoUpdate)="updateData(5, { photo: $event })">
+        </app-step5-photo-upload>
+        
+        <app-step-finalisation
+        [cvData]="cvData"
+        (preview)="generatePreview()"
+        (print)="printCV()"
+        (exportJSON)="exportJSON()"
+        (reset)="resetCV()"
+        (stepChange)="goToStep($event)"
+        (goToPhotoStep)="goToStep(5)"> 
+      </app-step-finalisation>
+      </div>
+
+      <!-- Navigation -->
+      <div class="navigation">
+        <button class="btn-secondary" (click)="previousStep()" [disabled]="currentStep === 1">
+          ← Précédent
+        </button>
+        <button *ngIf="currentStep < totalSteps" class="btn-primary" (click)="nextStep()">
+          Suivant →
+        </button>
+      </div>
+    </div>
+  </main>
+
+
+
+  <!-- Modal Preview -->
+  <div class="modal" *ngIf="showPreview" (click)="showPreview = false">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Aperçu du CV</h2>
+        <button class="close" (click)="showPreview = false">✕</button>
+      </div>
+      <div class="modal-body">
+        <iframe [srcdoc]="previewService.generateHTML(cvData)" frameborder="0"></iframe>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-primary" (click)="printCV()">🖨️ Imprimer</button>
+        <button class="btn-secondary" (click)="showPreview = false">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Génération en cours...</p>
+  </div>
+
+  <!-- Notification -->
+  <div class="notification" *ngIf="notification" [class]="notification.type">
+    {{ notification.message }}
+  </div>
+
+
+  <!-- Footer -->
+<app-footer></app-footer>
+</div>

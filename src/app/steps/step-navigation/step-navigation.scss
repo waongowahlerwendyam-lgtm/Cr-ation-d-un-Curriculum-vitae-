@@ -1,0 +1,418 @@
+.glass-card {
+  border-radius: 20px !important;
+  width: auto;
+  z-index: inherit;
+  position: relative;
+  background: transparent !important;
+  backdrop-filter: blur(12px) !important;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+:host {
+  display: block;
+  position: sticky;
+  top: 0px; 
+  z-index: 100;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.step-nav {
+  display: flex;
+  background: transparent !important;
+  padding: clamp(12px, 3vw, 20px) clamp(15px, 4vw, 40px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  gap: clamp(10px, 2vw, 20px);
+  width: 100%;
+  box-sizing: border-box;
+  flex-wrap: wrap;
+  
+  .step {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: clamp(8px, 2vw, 12px);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: clamp(8px, 1.5vw, 12px);
+    border-radius: 12px;
+    min-width: 0; // Permet le flex shrinking
+
+    &:hover:not(.locked) {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    &.active {
+      background: rgba(102, 126, 234, 0.15);
+      
+      .step-marker {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+      }
+      
+      .step-name { 
+        color: #667eea; 
+        font-weight: bold;
+      }
+    }
+
+    &.completed {
+      .step-marker {
+        background: #48bb78;
+        box-shadow: 0 3px 10px rgba(72, 187, 120, 0.3);
+      }
+      
+      .step-name { 
+        color: #48bb78;
+      }
+    }
+
+    &:not(.accessible) {
+      opacity: 0.4;
+      cursor: not-allowed;
+      
+      &:hover {
+        transform: none;
+        background: transparent;
+      }
+    }
+
+    .step-marker {
+      width: clamp(35px, 8vw, 45px);
+      height: clamp(35px, 8vw, 45px);
+      min-width: clamp(35px, 8vw, 45px);
+      border-radius: 50%;
+      background: rgba(203, 213, 224, 0.3);
+      backdrop-filter: blur(5px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(1rem, 4vw, 1.2rem);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+
+      .step-icon {
+        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+      }
+
+      .check {
+        font-size: clamp(1rem, 4vw, 1.3rem);
+        font-weight: bold;
+        color: white;
+      }
+    }
+
+    .step-info {
+      flex: 1;
+      min-width: 0; // Permet le text truncation
+      
+      .step-name {
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 5px;
+        font-size: clamp(0.75rem, 2.5vw, 0.9rem);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        transition: color 0.3s ease;
+      }
+
+      .progress-bar {
+        height: 4px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 2px;
+        overflow: hidden;
+        position: relative;
+
+        .progress-fill {
+          height: 100%;
+          background: linear-gradient(90deg, #667eea, #764ba2);
+          transition: width 0.3s ease;
+          position: relative;
+          
+          &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+              rgba(255, 255, 255, 0.2) 0%,
+              rgba(255, 255, 255, 0.4) 50%,
+              rgba(255, 255, 255, 0.2) 100%);
+            animation: shimmer 1.5s infinite;
+          }
+        }
+      }
+
+      .progress-text {
+        font-size: clamp(0.6rem, 2vw, 0.7rem);
+        color: rgba(255, 255, 255, 0.6);
+        margin-top: 3px;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+// ========== RESPONSIVE BREAKPOINTS OPTIMISÉS ==========
+
+// Tablette (1024px) - Réduction des espacements
+@media (max-width: 1024px) {
+  .step-nav {
+    padding: clamp(10px, 2.5vw, 15px) clamp(12px, 3vw, 30px);
+    gap: clamp(8px, 1.5vw, 15px);
+    
+    .step {
+      gap: clamp(6px, 1.5vw, 10px);
+      
+      .step-info .step-name {
+        font-size: clamp(0.7rem, 2.2vw, 0.85rem);
+      }
+    }
+  }
+}
+
+// Tablette portrait (768px) - Passage en grille 2x3 ou 3x2
+@media (max-width: 768px) {
+  :host {
+    position: relative;
+    top: auto;
+  }
+  
+  .step-nav {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    padding: 15px 20px;
+    
+    .step {
+      flex-direction: column;
+      text-align: center;
+      gap: 10px;
+      padding: 12px;
+      
+      .step-marker {
+        width: clamp(40px, 10vw, 50px);
+        height: clamp(40px, 10vw, 50px);
+        min-width: clamp(40px, 10vw, 50px);
+        font-size: clamp(1.1rem, 4vw, 1.3rem);
+      }
+      
+      .step-info {
+        width: 100%;
+        
+        .step-name {
+          white-space: normal;
+          text-align: center;
+          font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+          margin-bottom: 8px;
+        }
+        
+        .progress-bar {
+          width: 100%;
+        }
+        
+        .progress-text {
+          text-align: center;
+        }
+      }
+    }
+  }
+}
+
+// Mobile landscape (600px) - Grille plus compacte
+@media (max-width: 600px) {
+  .step-nav {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    padding: 12px 15px;
+    
+    .step {
+      padding: 10px;
+      gap: 8px;
+      
+      .step-marker {
+        width: clamp(35px, 8vw, 40px);
+        height: clamp(35px, 8vw, 40px);
+        min-width: clamp(35px, 8vw, 40px);
+        font-size: clamp(0.9rem, 3.5vw, 1.1rem);
+      }
+      
+      .step-info {
+        .step-name {
+          font-size: clamp(0.7rem, 2.2vw, 0.8rem);
+        }
+        
+        .progress-text {
+          font-size: clamp(0.55rem, 1.8vw, 0.65rem);
+        }
+      }
+    }
+  }
+}
+
+// Mobile portrait (480px) - Grille 1 colonne
+@media (max-width: 480px) {
+  .step-nav {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 10px 12px;
+    
+    .step {
+      flex-direction: row;
+      text-align: left;
+      gap: 12px;
+      padding: 8px 12px;
+      
+      .step-marker {
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+        font-size: 1rem;
+      }
+      
+      .step-info {
+        .step-name {
+          text-align: left;
+          font-size: 0.85rem;
+          margin-bottom: 4px;
+        }
+        
+        .progress-bar {
+          width: 100%;
+        }
+        
+        .progress-text {
+          text-align: left;
+          font-size: 0.6rem;
+        }
+      }
+    }
+  }
+}
+
+// Très petits écrans (380px)
+@media (max-width: 380px) {
+  .step-nav {
+    padding: 8px 10px;
+    gap: 6px;
+    
+    .step {
+      padding: 6px 10px;
+      gap: 10px;
+      
+      .step-marker {
+        width: 32px;
+        height: 32px;
+        min-width: 32px;
+        font-size: 0.85rem;
+        
+        .check {
+          font-size: 0.9rem;
+        }
+      }
+      
+      .step-info {
+        .step-name {
+          font-size: 0.75rem;
+          margin-bottom: 3px;
+        }
+        
+        .progress-bar {
+          height: 3px;
+        }
+        
+        .progress-text {
+          font-size: 0.55rem;
+          margin-top: 2px;
+        }
+      }
+    }
+  }
+}
+
+// Support pour les écrans très larges
+@media (min-width: 1600px) {
+  .step-nav {
+    padding: 25px 60px;
+    gap: 30px;
+    
+    .step {
+      .step-marker {
+        width: 55px;
+        height: 55px;
+        min-width: 55px;
+        font-size: 1.5rem;
+      }
+      
+      .step-info {
+        .step-name {
+          font-size: 1rem;
+        }
+        
+        .progress-text {
+          font-size: 0.75rem;
+        }
+      }
+    }
+  }
+}
+
+// Animation d'entrée pour les steps
+.step {
+  animation: fadeInUp 0.4s ease backwards;
+  
+  @for $i from 1 through 5 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.05}s;
+    }
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Effet de focus pour accessibilité
+.step:focus-visible {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+  border-radius: 12px;
+}
+
+// Support pour le mode réduit d'animations
+@media (prefers-reduced-motion: reduce) {
+  .step {
+    animation: none;
+  }
+  
+  .progress-fill::after {
+    animation: none;
+  }
+  
+  .step:hover:not(.locked) {
+    transform: none;
+  }
+}

@@ -1,12 +1,18 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { CvBuilderComponent } from './cv-builder/cv-builder';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true, 
+  imports: [CommonModule,ReactiveFormsModule,CvBuilderComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
 export class App {
-  protected readonly title = signal('PROJET_CV');
+  title = 'CV Builder Pro';
+  backgroundImage = './assets/image_back.jpg';
+profileImage = './assets/image_profile.jpg';
 }

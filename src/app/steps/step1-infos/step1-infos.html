@@ -1,0 +1,76 @@
+<div class="glass-card">
+  <div class="step1">
+    <div class="header">
+      <h2>Informations Personnelles</h2>
+      <p>Vos coordonnées de base</p>
+    </div>
+  
+    <form [formGroup]="form">
+      <div class="grid">
+        <div class="field" [class.has-error]="(form.get('nom')?.touched || showErrors) && form.get('nom')?.invalid">
+          <label>Nom <span class="required">*</span></label>
+          <input formControlName="nom" placeholder="Votre nom">
+          <span class="error">{{ getError('nom') }}</span>
+        </div>
+  
+        <div class="field" [class.has-error]="(form.get('prenom')?.touched || showErrors) && form.get('prenom')?.invalid">
+          <label>Prénom <span class="required">*</span></label>
+          <input formControlName="prenom" placeholder="Votre prénom">
+          <span class="error">{{ getError('prenom') }}</span>
+        </div>
+  
+        <div class="field" [class.has-error]="(form.get('email')?.touched || showErrors) && form.get('email')?.invalid">
+          <label>Email <span class="required">*</span></label>
+          <input type="email" formControlName="email" placeholder="votre@email.com">
+          <span class="error">{{ getError('email') }}</span>
+        </div>
+  
+        <div class="field" [class.has-error]="(form.get('telephone')?.touched || showErrors) && form.get('telephone')?.invalid">
+          <label>Téléphone <span class="required">*</span></label>
+          <input formControlName="telephone" placeholder="06 12 34 56 78">
+          <span class="error">{{ getError('telephone') }}</span>
+        </div>
+  
+        <div class="field">
+          <label>Adresse</label>
+          <input formControlName="adresse" placeholder="123 rue de Paris">
+        </div>
+  
+        <div class="field">
+          <label>Ville</label>
+          <input formControlName="ville" placeholder="Paris">
+        </div>
+  
+        <div class="field">
+          <label>Code Postal</label>
+          <input formControlName="codePostal" placeholder="75001">
+        </div>
+  
+        <div class="field">
+          <label>Pays</label>
+          <input formControlName="pays" placeholder="France">
+        </div>
+  
+        <div class="field">
+          <label>Date de naissance</label>
+          <input type="date" formControlName="dateNaissance">
+        </div>
+  
+        <div class="field">
+          <label>Permis</label>
+          <input formControlName="permis" placeholder="B">
+        </div>
+      </div>
+    </form>
+  
+    <div class="info">
+      <span>ℹ️</span>
+      <span>Les champs marqués <span class="required">*</span> sont obligatoires</span>
+    </div>
+    
+    <div class="global-error" *ngIf="showErrors && !form.valid">
+      <span>⚠️</span>
+      <span>Veuillez remplir correctement tous les champs obligatoires</span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,165 @@
+<div class="glass-card">
+  <div class="step4">
+    <div class="header">
+      <h2>📊 Compétences & Langues</h2>
+      <p>Valorisez vos atouts professionnels</p>
+    </div>
+  
+    <div class="sections">
+      <!-- ==================== COMPÉTENCES ==================== -->
+      <div class="section">
+        <h3>⚡ Compétences techniques</h3>
+        <div class="add-form">
+          <div class="input-group">
+            <input 
+              [(ngModel)]="newCompetence" 
+              placeholder="Ex: Angular, React, Python, Gestion de projet..."
+              (keyup.enter)="addCompetence()">
+          </div>
+          <select [(ngModel)]="newCompetenceNiveau">
+            <option *ngFor="let n of niveauxComp" [value]="n">{{ n }}</option>
+          </select>
+          <button class="btn-add" (click)="addCompetence()">
+            <span class="btn-icon">➕</span> Ajouter
+          </button>
+        </div>
+        <div class="tags">
+          <div *ngFor="let comp of competences" class="tag">
+            <span class="tag-name">{{ comp.nom }}</span>
+            <span class="tag-level" [class]="getCompetenceLevelClass(comp.niveau)">
+              {{ comp.niveau }}
+            </span>
+            <button class="tag-remove" (click)="removeCompetence(comp.id)">✕</button>
+          </div>
+          <div *ngIf="competences.length === 0" class="empty-hint">
+            <span>💡 Ajoutez vos premières compétences</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== LANGUES AVEC API ET DRAPEAUX ==================== -->
+      <div class="section">
+        <h3>🌍 Langues</h3>
+        <div class="add-form">
+          <div class="language-input-wrapper">
+            <div class="input-group">
+              <input 
+                [(ngModel)]="languageSearchTerm"
+                (focus)="showLanguageDropdown = true"
+                (blur)="closeDropdown()"
+                (input)="onSearchChange()"
+                placeholder="🔍 Rechercher une langue (Français, Anglais, Mooré...)"
+                autocomplete="off">
+            </div>
+            <div class="language-dropdown" *ngIf="showLanguageDropdown && (filteredLanguages.length > 0 || isLoadingLanguages)">
+              <div *ngIf="isLoadingLanguages" class="loading-dropdown">
+                <div class="spinner-small"></div>
+                <span>Chargement...</span>
+              </div>
+              <div 
+                *ngFor="let lang of filteredLanguages.slice(0, 20)" 
+                class="language-option"
+                (click)="selectLanguage(lang)">
+                <img [src]="lang.flag" class="language-flag-img" [alt]="lang.name" loading="lazy">
+                <span class="language-name">{{ lang.name }}</span>
+                <span *ngIf="lang.isLocal" class="local-badge">🇧🇫</span>
+              </div>
+              <div *ngIf="!isLoadingLanguages && filteredLanguages.length === 0 && languageSearchTerm" class="no-results">
+                <p>Aucune langue trouvée pour "{{ languageSearchTerm }}"</p>
+                <button class="btn-add-custom" (click)="addCustomLanguage(languageSearchTerm); selectLanguage({name: languageSearchTerm, flag: getFlagForLanguage(languageSearchTerm), isLocal: true})">
+                  ➕ Ajouter
+                </button>
+              </div>
+            </div>
+          </div>
+          <input 
+            [(ngModel)]="newLangue" 
+            placeholder="Ou saisir manuellement..."
+            (keyup.enter)="addLangue()">
+          <select [(ngModel)]="newLangueNiveau">
+            <option *ngFor="let n of niveauxLangue" [value]="n">{{ n }}</option>
+          </select>
+          <button class="btn-add" (click)="addLangue()">
+            <span class="btn-icon">➕</span> Ajouter
+          </button>
+        </div>
+        
+        <div class="tags">
+          <div *ngFor="let langue of langues" class="tag tag-language">
+            <img [src]="getLanguageFlagUrl(langue)" class="language-flag-small" [alt]="langue.nom" loading="lazy">
+            <span class="tag-name">{{ langue.nom }}</span>
+            <span class="tag-level" [class]="getLangueLevelClass(langue.niveau)">
+              {{ langue.niveau }}
+            </span>
+            <button class="tag-remove" (click)="removeLangue(langue.id)">✕</button>
+          </div>
+          <div *ngIf="langues.length === 0" class="empty-hint">
+            <span>💡 Ajoutez vos langues</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== CENTRES D'INTÉRÊT ==================== -->
+      <div class="section">
+        <h3>🎯 Centres d'intérêt</h3>
+        <div class="add-form">
+          <div class="input-group">
+            <input 
+              [(ngModel)]="newCentreInteret" 
+              placeholder="Ex: Sport, Voyages, Lecture..."
+              (keyup.enter)="addCentreInteret()">
+          </div>
+          <button class="btn-add" (click)="addCentreInteret()">
+            <span class="btn-icon">➕</span> Ajouter
+          </button>
+        </div>
+        <div class="tags">
+          <div *ngFor="let interet of centresInteret; let i = index" class="tag">
+            <span class="tag-name">{{ interet }}</span>
+            <button class="tag-remove" (click)="removeCentreInteret(i)">✕</button>
+          </div>
+          <div *ngIf="centresInteret.length === 0" class="empty-hint">
+            <span>💡 Ajoutez vos passions</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== RÉSEAUX SOCIAUX ==================== -->
+      <div class="section">
+        <h3>🔗 Réseaux sociaux</h3>
+        <div class="add-form">
+          <select [(ngModel)]="newReseauNom">
+            <option value="">Sélectionner</option>
+            <option *ngFor="let r of reseauxTypes" [value]="r">{{ r }}</option>
+          </select>
+          <div class="input-group">
+            <input 
+              [(ngModel)]="newReseauUrl" 
+              placeholder="https://..."
+              (keyup.enter)="addReseauSocial()">
+          </div>
+          <button class="btn-add" (click)="addReseauSocial()">
+            <span class="btn-icon">➕</span> Ajouter
+          </button>
+        </div>
+        <div class="links-list">
+          <div *ngFor="let rs of reseauxSociaux" class="link-item">
+            <span class="link-icon">
+              <span *ngIf="rs.nom === 'LinkedIn'">🔗</span>
+              <span *ngIf="rs.nom === 'GitHub'">🐙</span>
+              <span *ngIf="rs.nom === 'Twitter'">🐦</span>
+              <span *ngIf="rs.nom === 'Portfolio'">📁</span>
+              <span *ngIf="rs.nom === 'Autre'">🔗</span>
+            </span>
+            <span class="link-name">{{ rs.nom }}</span>
+            <a [href]="rs.url" target="_blank" class="link-url">{{ rs.url }}</a>
+            <button class="link-remove" (click)="removeReseauSocial(rs.id)">✕</button>
+          </div>
+          <div *ngIf="reseauxSociaux.length === 0" class="empty-hint">
+            <span>💡 Ajoutez vos profils</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

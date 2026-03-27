@@ -1,0 +1,191 @@
+<div class="glass-card">
+  <div class="step3">
+    <div class="header">
+      <h2>Expériences & Formations</h2>
+      <p>Ajoutez votre parcours professionnel et académique</p>
+    </div>
+
+    <div class="tabs">
+      <button 
+        [class.active]="activeTab === 'exp'"
+        (click)="activeTab = 'exp'">
+        💼 Expériences
+      </button>
+      <button 
+        [class.active]="activeTab === 'form'"
+        (click)="activeTab = 'form'">
+        🎓 Formations
+      </button>
+    </div>
+
+    <!-- ==================== EXPÉRIENCES ==================== -->
+    <div *ngIf="activeTab === 'exp'" class="tab-content">
+      <div class="form-card">
+        <h3>Ajouter une expérience</h3>
+        <div class="form-grid">
+          <!-- Titre du poste -->
+          <div class="field-group">
+            <label class="field-label">📌 Titre du poste</label>
+            <input [(ngModel)]="newExperience.titre" placeholder="ex: Développeur Full Stack">
+            <span class="error" *ngIf="expErrors.titre">{{ expErrors.titre }}</span>
+          </div>
+          
+          <!-- Entreprise -->
+          <div class="field-group">
+            <label class="field-label">🏢 Entreprise</label>
+            <input [(ngModel)]="newExperience.entreprise" placeholder="ex: Google, Microsoft">
+            <span class="error" *ngIf="expErrors.entreprise">{{ expErrors.entreprise }}</span>
+          </div>
+          
+          <!-- Date début -->
+          <div class="field-group">
+            <label class="field-label">📅 Date de début</label>
+            <input type="date" [(ngModel)]="newExperience.dateDebut" placeholder="AAAA-MM-JJ">
+            <span class="error" *ngIf="expErrors.dateDebut">{{ expErrors.dateDebut }}</span>
+          </div>
+          
+          <!-- Date fin -->
+          <div class="field-group">
+            <label class="field-label">📅 Date de fin</label>
+            <input type="date" [(ngModel)]="newExperience.dateFin" placeholder="AAAA-MM-JJ" [disabled]="newExperience.enCours">
+            <span class="error" *ngIf="expErrors.dateFin">{{ expErrors.dateFin }}</span>
+          </div>
+          
+          <!-- En cours -->
+          <label class="checkbox">
+            <input type="checkbox" [(ngModel)]="newExperience.enCours"> En cours
+          </label>
+          
+          <!-- Description -->
+          <div class="field-group full-width">
+            <label class="field-label">📝 Description du poste</label>
+            <textarea [(ngModel)]="newExperience.description" placeholder="Décrivez vos missions et responsabilités..." rows="3"></textarea>
+          </div>
+          
+          <button class="btn-add" (click)="addExperience()">+ Ajouter</button>
+        </div>
+      </div>
+
+      <div class="items-list">
+        <div *ngFor="let exp of experiences" class="item-card">
+          <div *ngIf="!editingExp || editingExp.id !== exp.id; else editExp">
+            <div class="item-header">
+              <h4>{{ exp.titre }}</h4>
+              <div class="actions">
+                <button (click)="editExperience(exp)">✏️</button>
+                <button (click)="deleteExperience(exp.id)">🗑️</button>
+              </div>
+            </div>
+            <div class="item-sub">{{ exp.entreprise }}</div>
+            <div class="item-date">{{ exp.dateDebut }} - {{ exp.enCours ? 'Présent' : exp.dateFin }}</div>
+            <p>{{ exp.description }}</p>
+          </div>
+          <ng-template #editExp>
+            <div class="edit-form" *ngIf="editingExp">
+              <label>📌 Titre</label>
+              <input [(ngModel)]="editingExp.titre" placeholder="Titre">
+              <label>🏢 Entreprise</label>
+              <input [(ngModel)]="editingExp.entreprise" placeholder="Entreprise">
+              <label>📅 Date début</label>
+              <input type="date" [(ngModel)]="editingExp.dateDebut">
+              <label>📅 Date fin</label>
+              <input type="date" [(ngModel)]="editingExp.dateFin" [disabled]="editingExp.enCours">
+              <label><input type="checkbox" [(ngModel)]="editingExp.enCours"> En cours</label>
+              <label>📝 Description</label>
+              <textarea [(ngModel)]="editingExp.description" rows="3"></textarea>
+              <div class="edit-actions">
+                <button class="save" (click)="saveExperience()">💾 Sauvegarder</button>
+                <button class="cancel" (click)="cancelEdit()">Annuler</button>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== FORMATIONS ==================== -->
+    <div *ngIf="activeTab === 'form'" class="tab-content">
+      <div class="form-card">
+        <h3>Ajouter une formation</h3>
+        <div class="form-grid">
+          <!-- Diplôme -->
+          <div class="field-group">
+            <label class="field-label">🎓 Diplôme obtenu</label>
+            <input [(ngModel)]="newFormation.diplome" placeholder="ex: Master, Licence, Bac+5">
+            <span class="error" *ngIf="formErrors.diplome">{{ formErrors.diplome }}</span>
+          </div>
+          
+          <!-- Établissement -->
+          <div class="field-group">
+            <label class="field-label">🏛️ Établissement</label>
+            <input [(ngModel)]="newFormation.etablissement" placeholder="ex: Université Paris-Sorbonne">
+            <span class="error" *ngIf="formErrors.etablissement">{{ formErrors.etablissement }}</span>
+          </div>
+          
+          <!-- Année début -->
+          <div class="field-group">
+            <label class="field-label">📅 Année de début</label>
+            <input type="text" [(ngModel)]="newFormation.anneeDebut" placeholder="AAAA" maxlength="4">
+            <span class="error" *ngIf="formErrors.anneeDebut">{{ formErrors.anneeDebut }}</span>
+          </div>
+          
+          <!-- Année fin -->
+          <div class="field-group">
+            <label class="field-label">📅 Année de fin</label>
+            <input type="text" [(ngModel)]="newFormation.anneeFin" placeholder="AAAA" [disabled]="newFormation.enCours" maxlength="4">
+            <span class="error" *ngIf="formErrors.anneeFin">{{ formErrors.anneeFin }}</span>
+          </div>
+          
+          <!-- En cours -->
+          <label class="checkbox">
+            <input type="checkbox" [(ngModel)]="newFormation.enCours"> En cours
+          </label>
+          
+          <!-- Description -->
+          <div class="field-group full-width">
+            <label class="field-label">📝 Description</label>
+            <textarea [(ngModel)]="newFormation.description" placeholder="Décrivez la formation, spécialités, options..." rows="3"></textarea>
+          </div>
+          
+          <button class="btn-add" (click)="addFormation()">+ Ajouter</button>
+        </div>
+      </div>
+
+      <div class="items-list">
+        <div *ngFor="let form of formations" class="item-card">
+          <div *ngIf="!editingForm || editingForm.id !== form.id; else editForm">
+            <div class="item-header">
+              <h4>{{ form.diplome }}</h4>
+              <div class="actions">
+                <button (click)="editFormation(form)">✏️</button>
+                <button (click)="deleteFormation(form.id)">🗑️</button>
+              </div>
+            </div>
+            <div class="item-sub">{{ form.etablissement }}</div>
+            <div class="item-date">{{ form.anneeDebut }} - {{ form.enCours ? 'Présent' : form.anneeFin }}</div>
+            <p>{{ form.description }}</p>
+          </div>
+          <ng-template #editForm>
+            <div class="edit-form" *ngIf="editingForm">
+              <label>🎓 Diplôme</label>
+              <input [(ngModel)]="editingForm.diplome" placeholder="Diplôme">
+              <label>🏛️ Établissement</label>
+              <input [(ngModel)]="editingForm.etablissement" placeholder="Établissement">
+              <label>📅 Année début</label>
+              <input type="text" [(ngModel)]="editingForm.anneeDebut" placeholder="AAAA">
+              <label>📅 Année fin</label>
+              <input type="text" [(ngModel)]="editingForm.anneeFin" placeholder="AAAA" [disabled]="editingForm.enCours">
+              <label><input type="checkbox" [(ngModel)]="editingForm.enCours"> En cours</label>
+              <label>📝 Description</label>
+              <textarea [(ngModel)]="editingForm.description" rows="3"></textarea>
+              <div class="edit-actions">
+                <button class="save" (click)="saveFormation()">💾 Sauvegarder</button>
+                <button class="cancel" (click)="cancelEdit()">Annuler</button>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

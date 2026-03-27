@@ -1,0 +1,33 @@
+<div class="glass-card">
+  <div class="photo-upload">
+    <div class="header">
+      <h2>Photo de profil</h2>
+      <p>Ajoutez une photo professionnelle (optionnel)</p>
+    </div>
+  
+    <div class="upload-area">
+      <div *ngIf="!preview" class="upload-placeholder">
+        <div class="icon">
+          <img src="/assets/image_profile.jpg" alt="Exemple photo" class="example-photo">
+        </div>
+        <p>Cliquez pour ajouter une photo</p>
+        <input type="file" accept="image/*" (change)="onFileSelected($event)" id="photo-input">
+        <label for="photo-input" class="btn-upload">Choisir une photo</label>
+      </div>
+  
+      <div *ngIf="preview" class="preview-container">
+        <img [src]="preview" alt="Photo de profil">
+        <button class="btn-remove" (click)="removePhoto()">🗑️ Supprimer</button>
+      </div>
+    </div>
+  
+    <div class="tips">
+      <p>💡 Conseils :</p>
+      <ul>
+        <li>Photo récente et de bonne qualité</li>
+        <li>Fond neutre et professionnel</li>
+        <li>Format carré recommandé</li>
+      </ul>
+    </div>
+  </div>
+</div>

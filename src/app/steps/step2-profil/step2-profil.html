@@ -1,0 +1,70 @@
+<div class="step2">
+  <div class="header">
+    <h2>📝 Profil professionnel</h2>
+    <p>Décrivez votre parcours, vos compétences clés et vos objectifs professionnels</p>
+  </div>
+
+  <div class="form-group">
+    <label for="profile">
+      Votre profil professionnel
+      <span class="label-badge">Recommandé (10-500 caractères)</span>
+    </label>
+    
+    <textarea
+      id="profile"
+      class="profile-textarea"
+      [(ngModel)]="tempProfile"
+      placeholder="Exemple : Développeur Full Stack avec 5 ans d'expérience, spécialisé en Angular et Node.js..."
+      rows="6"
+      (focus)="isEditing = true">
+    </textarea>
+    
+    <div class="counter" [class.warning]="getRemainingChars() < 50" [class.danger]="getCharCount() > maxChars">
+      <span class="char-count">{{ getCharCount() }}</span> / {{ maxChars }} caractères
+      <span class="remaining" *ngIf="getRemainingChars() > 0">({{ getRemainingChars() }} restants)</span>
+    </div>
+    
+    <div class="error-message" *ngIf="showError && !isValid()">
+      ⚠️ Le profil doit contenir entre {{ minChars }} et {{ maxChars }} caractères.
+      Actuellement : {{ getCharCount() }} caractères.
+    </div>
+    
+    <div class="success-message" *ngIf="isSaved">
+      ✅ Profil enregistré avec succès !
+    </div>
+  </div>
+
+  <div class="action-buttons">
+    <button 
+      class="btn-save" 
+      (click)="saveProfile()" 
+      [disabled]="!isValid() || !hasUnsavedChanges()">
+      💾 {{ isSaved ? 'Enregistré !' : 'Enregistrer le profil' }}
+    </button>
+    
+    <button 
+      class="btn-cancel" 
+      (click)="cancelEdit()" 
+      *ngIf="hasUnsavedChanges()">
+      ❌ Annuler
+    </button>
+  </div>
+
+  <div class="profile-preview" *ngIf="profile && profile.trim().length > 0 && !isEditing">
+    <h4>📄 Profil enregistré</h4>
+    <div class="preview-content">
+      <p>{{ profile | slice:0:300 }}{{ profile.length > 300 ? '...' : '' }}</p>
+      <button class="btn-edit" (click)="editProfile()">✏️ Modifier</button>
+    </div>
+  </div>
+
+  <div class="tips">
+    <h4>💡 Conseils pour un bon profil</h4>
+    <ul>
+      <li>Soyez concis et précis (200-300 caractères idéal)</li>
+      <li>Mettez en avant vos compétences clés</li>
+      <li>Décrivez vos objectifs professionnels</li>
+      <li>Utilisez des mots-clés pertinents pour votre secteur</li>
+    </ul>
+  </div>
+</div>

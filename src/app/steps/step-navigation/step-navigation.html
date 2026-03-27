@@ -1,0 +1,24 @@
+<div class="glass-card">
+  <div class="step-nav">
+    <div *ngFor="let step of steps" 
+         class="step"
+         [class.active]="currentStep === step.number"
+         [class.completed]="isValid(step.number)"
+         [class.accessible]="canAccess(step.number)"
+         (click)="onClick(step.number)">
+      
+      <div class="step-marker">
+        <span *ngIf="!isValid(step.number)" class="step-icon">{{ step.icon }}</span>
+        <span *ngIf="isValid(step.number)" class="check">✓</span>
+      </div>
+      
+      <div class="step-info">
+        <div class="step-name">{{ step.name }}</div>
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="getProgress(step.number)"></div>
+        </div>
+        <div class="progress-text">{{ getProgress(step.number) }}%</div>
+      </div>
+    </div>
+  </div>
+</div>

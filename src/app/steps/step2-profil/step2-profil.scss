@@ -1,0 +1,271 @@
+.step2 {
+  padding: 30px;
+
+  .header {
+    margin-bottom: 30px;
+    
+    h2 { 
+      color: #ffffff !important; 
+      margin-bottom: 8px; 
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+    
+    p { 
+      color: rgba(255, 255, 255, 0.9) !important; 
+    }
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+    
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: 500;
+      color: #ffffff !important;
+    }
+  }
+
+  .profile-textarea {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    resize: vertical;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+    transition: all 0.3s ease;
+    
+    &:focus {
+      outline: none;
+      border-color: #667eea;
+      background: rgba(255, 255, 255, 0.3) !important;
+      box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+    }
+    
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+  }
+
+  .counter {
+    text-align: right;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 8px;
+
+    &.warning { 
+      color: #ff6b6b; 
+    }
+  }
+
+  .error-message {
+    color: #ff6b6b;
+    font-size: 0.8rem;
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: rgba(255, 107, 107, 0.1);
+    border-radius: 8px;
+    display: inline-block;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    margin-bottom: 25px;
+
+    .btn-save {
+      background: linear-gradient(135deg, #48bb78, #38a169);
+      color: white;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      
+      &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(72, 187, 120, 0.3);
+      }
+      
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+    
+    .btn-cancel {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+      }
+    }
+  }
+
+  .profile-preview {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    border-radius: 12px;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    
+    h4 {
+      color: #ffd700 !important;
+      margin: 0 0 10px 0;
+      font-size: 0.9rem;
+    }
+    
+    .preview-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 15px;
+      
+      p {
+        color: rgba(255, 255, 255, 0.9);
+        margin: 0;
+        flex: 1;
+        line-height: 1.5;
+        font-size: 0.9rem;
+      }
+      
+      .btn-edit {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: none;
+        padding: 6px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.8rem;
+        transition: all 0.3s;
+        white-space: nowrap;
+        
+        &:hover {
+          background: rgba(255, 255, 255, 0.3);
+          transform: translateY(-2px);
+        }
+      }
+    }
+  }
+
+  .tips {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    h4 {
+      color: #ffffff !important;
+      margin-bottom: 12px;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 20px;
+
+      li {
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 8px;
+      }
+    }
+  }
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(12px) !important;
+  border-radius: 1rem !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+// Responsive pour mobile (520px)
+@media (max-width: 520px) {
+  .step2 {
+    padding: 20px;
+    
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+      
+      h2 {
+        font-size: 1.5rem;
+      }
+      
+      p {
+        font-size: 0.9rem;
+      }
+    }
+    
+    .profile-textarea {
+      min-height: 180px;
+      font-size: 14px;
+      padding: 10px;
+    }
+    
+    .counter {
+      font-size: 0.75rem;
+    }
+    
+    .action-buttons {
+      flex-direction: column;
+      
+      .btn-save, .btn-cancel {
+        width: 100%;
+        text-align: center;
+      }
+    }
+    
+    .profile-preview .preview-content {
+      flex-direction: column;
+      
+      .btn-edit {
+        align-self: flex-start;
+      }
+    }
+    
+    .tips {
+      padding: 15px;
+      
+      h4 {
+        font-size: 1rem;
+      }
+      
+      ul li {
+        font-size: 0.85rem;
+      }
+    }
+  }
+}
+
+// Responsive pour très petits écrans (380px)
+@media (max-width: 380px) {
+  .step2 {
+    padding: 15px;
+    
+    .profile-textarea {
+      min-height: 200px;
+      font-size: 13px;
+      padding: 8px;
+    }
+    
+    .header h2 {
+      font-size: 1.3rem;
+    }
+  }
+}

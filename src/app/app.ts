@@ -2,12 +2,12 @@ import { Component, signal } from '@angular/core';
 import { CvBuilderComponent } from './cv-builder/cv-builder';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true, 
-  imports: [CommonModule,ReactiveFormsModule,CvBuilderComponent],
+  imports: [CommonModule,ReactiveFormsModule,CvBuilderComponent,RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

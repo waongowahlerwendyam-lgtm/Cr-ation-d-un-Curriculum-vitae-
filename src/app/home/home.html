@@ -1,0 +1,108 @@
+<div class="home-container">
+    <!-- Video Background -->
+    <div class="video-background">
+      <video autoplay muted loop playsinline id="bg-video">
+        <source src="/assets/video/backgram.mp4" type="video/mp4">
+      </video>
+      <div class="video-overlay"></div>
+    </div>
+  
+    <!-- Main Content -->
+    <div class="auth-container">
+      <div class="glass-card">
+        <div class="logo-section">
+          <img src="/assets/android-chrome-512x512.png" alt="Logo" class="logo">
+          <h1>CV Builder Pro</h1>
+          <p>Créez votre CV professionnel en 5 étapes</p>
+        </div>
+  
+        <!-- Tabs: Connexion / Inscription -->
+        <div class="tabs">
+          <button class="tab" [class.active]="activeTab === 'login'" (click)="activeTab = 'login'">
+            🔐 Connexion
+          </button>
+          <button class="tab" [class.active]="activeTab === 'register'" (click)="activeTab = 'register'">
+            ✨ Inscription
+          </button>
+        </div>
+  
+        <!-- Formulaire de Connexion -->
+        <form *ngIf="activeTab === 'login'" (ngSubmit)="onLogin()" class="auth-form">
+          <div class="input-group">
+            <div class="input-icon">📧</div>
+            <input type="email" [(ngModel)]="loginData.email" name="loginEmail" placeholder="Email" required>
+          </div>
+          
+          <div class="input-group">
+            <div class="input-icon">🔒</div>
+            <input type="password" [(ngModel)]="loginData.password" name="loginPassword" placeholder="Mot de passe" required>
+          </div>
+          
+          <div class="form-options">
+            <label class="checkbox">
+              <input type="checkbox"> Se souvenir de moi
+            </label>
+            <a href="#" class="forgot-password">Mot de passe oublié ?</a>
+          </div>
+          
+          <button type="submit" class="btn-primary" [disabled]="isLoading">
+            {{ isLoading ? 'Connexion...' : 'Se connecter' }}
+          </button>
+          
+          <div class="demo-account">
+            <p>🔓 Compte démo :</p>
+            <code>demo@cvbuilder.com</code> / <code>password123</code>
+          </div>
+        </form>
+  
+        <!-- Formulaire d'Inscription -->
+        <form *ngIf="activeTab === 'register'" (ngSubmit)="onRegister()" class="auth-form">
+          <div class="input-group">
+            <div class="input-icon">👤</div>
+            <input type="text" [(ngModel)]="registerData.nom" name="registerNom" placeholder="Nom" required>
+          </div>
+          
+          <div class="input-group">
+            <div class="input-icon">👤</div>
+            <input type="text" [(ngModel)]="registerData.prenom" name="registerPrenom" placeholder="Prénom" required>
+          </div>
+          
+          <div class="input-group">
+            <div class="input-icon">📧</div>
+            <input type="email" [(ngModel)]="registerData.email" name="registerEmail" placeholder="Email" required>
+          </div>
+          
+          <div class="input-group">
+            <div class="input-icon">📱</div>
+            <input type="tel" [(ngModel)]="registerData.telephone" name="registerTelephone" placeholder="Téléphone" required>
+          </div>
+          
+          <div class="input-group">
+            <div class="input-icon">🔒</div>
+            <input type="password" [(ngModel)]="registerData.password" name="registerPassword" placeholder="Mot de passe" required>
+          </div>
+          
+          <div class="input-group">
+            <div class="input-icon">🔒</div>
+            <input type="password" [(ngModel)]="registerData.confirmPassword" name="confirmPassword" placeholder="Confirmer le mot de passe" required>
+          </div>
+          
+          <div class="terms">
+            <label class="checkbox">
+              <input type="checkbox" [(ngModel)]="registerData.acceptTerms" name="acceptTerms">
+              J'accepte les <a href="#">conditions d'utilisation</a>
+            </label>
+          </div>
+          
+          <button type="submit" class="btn-primary" [disabled]="isLoading || !registerData.acceptTerms">
+            {{ isLoading ? 'Inscription...' : 'Créer mon compte' }}
+          </button>
+        </form>
+      </div>
+    </div>
+  
+    <!-- Footer -->
+    <footer class="footer">
+      <p>© 2026 CV Builder Pro - Créez votre CV professionnel</p>
+    </footer>
+  </div>

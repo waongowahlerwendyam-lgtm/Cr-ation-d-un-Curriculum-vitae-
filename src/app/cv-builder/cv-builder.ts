@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 // Imports des services
 import { CvStorageService } from '../Service/cv-storage-service';
@@ -12,9 +13,7 @@ import { Step1InfosComponent } from '../steps/step1-infos/step1-infos';
 import { Step2ProfilComponent } from '../steps/step2-profil/step2-profil';
 import { Step3ExperiencesComponent } from '../steps/step3-experiences/step3-experiences';
 import { Step4CompetencesComponent } from '../steps/step4-competences/step4-competences';
-import { Step5PhotoUploadComponent } from '../steps/step5-photo-upload/step5-photo-upload';
 import { StepFinalisationComponent } from '../steps/step-finalisation/step-finalisation';
-
 
 // Import du modèle
 import { CVData } from '../models/cv-data.model';
@@ -34,7 +33,6 @@ import { FooterComponent } from '../footer/footer';
     Step3ExperiencesComponent,
     Step4CompetencesComponent,
     FooterComponent,
-    Step5PhotoUploadComponent,
     StepFinalisationComponent
   ]
 })
@@ -54,15 +52,27 @@ export class CvBuilderComponent implements OnInit, OnDestroy {
   isLoading = false;
   notification: { type: string; message: string } | null = null;
   private autoSaveInterval: any;
+  userName: string = '';
 
   constructor(
     public previewService: CvPreviewService,
-    private storageService: CvStorageService
+    private storageService: CvStorageService,
+    private router: Router
   ) {
     this.cvData = this.storageService.getCVData();
   }
 
   ngOnInit() {
+    // Récupérer le nom de l'utilisateur connecté
+    this.userName = localStorage.getItem('userName') || 'Utilisateur';
+    
+    // Vérifier si l'utilisateur est connecté
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    if (!isLoggedIn || isLoggedIn !== 'true') {
+      this.router.navigate(['/']);
+      return;
+    }
+
     this.loadSavedData();
     this.startAutoSave();
     this.validateAllSteps();
@@ -72,6 +82,28 @@ export class CvBuilderComponent implements OnInit, OnDestroy {
     if (this.autoSaveInterval) {
       clearInterval(this.autoSaveInterval);
     }
+  }
+
+  // ==================== DÉCONNEXION ====================
+  
+  logout() {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('userEmail');
+    localStorage.removeItem('userRole');
+    localStorage.removeItem('userName');
+    this.router.navigate(['/']);
+    this.showNotification('Déconnexion réussie !', 'success');
+  }
+
+  // ==================== GESTION PHOTO ====================
+  
+  onPhotoAdded(photoData: string) {
+    console.log('📸 Photo reçue du composant finalisation');
+    this.cvData.photo = photoData;
+    this.storageService.saveCV(this.cvData);
+    this.validateStep(5);
+    this.updateStepProgress();
+    this.showNotification('success', '✅ Photo ajoutée avec succès !');
   }
 
   // ==================== CHARGEMENT & SAUVEGARDE ====================
@@ -139,12 +171,9 @@ export class CvBuilderComponent implements OnInit, OnDestroy {
         break;
         
       case 3:
-        // ✅ CORRECTION : Step3 est OPTIONNEL
         const hasExperiences = this.cvData.experiences && this.cvData.experiences.length > 0;
         const hasFormations = this.cvData.formations && this.cvData.formations.length > 0;
         const isValid3 = hasExperiences || hasFormations;
-        
-        // ✅ L'icône ✓ s'affiche UNIQUEMENT si des données existent
         this.stepValidation.step3 = isValid3;
         this.stepProgress.step3 = isValid3 ? 100 : 0;
         break;
@@ -193,7 +222,6 @@ export class CvBuilderComponent implements OnInit, OnDestroy {
     this.updateStepProgress();
     this.stepValidation.step1 = this.validatePersonalInfo();
     this.stepValidation.step2 = this.validateProfile();
-    // ✅ CORRECTION : Step3 dépend des données
     this.stepValidation.step3 = this.validateExperiencesOrFormations();
     this.stepValidation.step4 = this.validateCompetences();
     this.stepValidation.step5 = this.hasPhoto();
@@ -213,7 +241,6 @@ export class CvBuilderComponent implements OnInit, OnDestroy {
     return !!(this.cvData.profile && this.cvData.profile.trim().length >= 10);
   }
 
-  // ✅ Nouvelle méthode
   validateExperiencesOrFormations(): boolean {
     const hasExperiences = this.cvData.experiences && this.cvData.experiences.length > 0;
     const hasFormations = this.cvData.formations && this.cvData.formations.length > 0;
@@ -411,5 +438,4 @@ export class CvBuilderComponent implements OnInit, OnDestroy {
       this.notification = null;
     }, 3000);
   }
-  
 }

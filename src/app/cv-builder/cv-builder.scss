@@ -1,270 +1,413 @@
+// ==================== CONTAINER PRINCIPAL ====================
+
 .cv-builder {
-    min-height: 100vh;
-    background: transparent;
-    font-family: 'Segoe UI', sans-serif;
+  min-height: 100vh;
+  background: transparent;
+  font-family: 'Segoe UI', sans-serif;
+  position: relative;
+  z-index: 1;
+}
+
+// ==================== WAVE BACKGROUND ====================
+
+.wave-background {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.waves {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+}
+
+// ==================== HEADER SANS GLASSMORPHISM ====================
+
+.header {
+  background: transparent; // Pas de fond flou
+  padding: 25px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   
-    .header {
-      background: transparent;
-      border-radius: 20px;
-      padding: 20px 40px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 20px;
-      z-index: 30px;
-  
-      .logo h1 {
-        background: linear-gradient(400deg, #011881, #9d4dee);
+  .header-left {
+    flex: 8;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    
+    .logo-icon {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      border-radius: 50%;
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2));
+    }
+    
+    .header-title {
+      h1 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        background: linear-gradient(135deg, #667eea, #764ba2, #ffd700);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        margin-bottom: 5px;
+        background-clip: text;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        
+        @media (max-width: 900px) {
+          font-size: 1.2rem;
+        }
+        
+        @media (max-width: 768px) {
+          font-size: 1.1rem;
+        }
       }
-  
-      .logo p {
-        color: #718096;
-        font-size: 0.9rem;
-      }
-  
-      .progress-circle {
-        width: 80px;
-  
-        svg {
-          width: 100%;
-          height: auto;
-  
-          .bg {
-            fill: none;
-            stroke: #e2e8f0;
-            stroke-width: 3.8;
-          }
-  
-          .fill {
-            fill: none;
-            stroke: #667eea;
-            stroke-width: 3.8;
-            stroke-linecap: round;
-            transition: stroke-dasharray 0.3s;
-          }
-  
-          text {
-            fill: #2d3748;
-            font-size: 0.5em;
-            text-anchor: middle;
-            dominant-baseline: middle;
-            font-weight: bold;
-          }
+      
+      p {
+        color: white;
+        margin: 8px 0 0;
+        font-size: 0.85rem;
+        font-weight: 400;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        
+        @media (max-width: 768px) {
+          font-size: 0.75rem;
+          margin-top: 5px;
         }
       }
     }
-    
-    // Pour Disposition 1
-.header {
-  flex-direction: column;
+  }
   
-  .logo-section {
+  .header-right {
+    flex: 2;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
     gap: 15px;
-    width: 100%;
-  }
-  
-  
-  .slogan {
-    width: 100%;
-    text-align: center;
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
     
-    p {
-      color: rgba(255, 255, 255, 0.7);
-      font-size: 0.85rem;
-      margin: 0;
+    .user-name {
+      color: #ffd700;
+      font-weight: 600;
+      font-size: 0.95rem;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 8px 18px;
+      border-radius: 40px;
+      white-space: nowrap;
+      backdrop-filter: blur(4px);
+      transition: all 0.3s ease;
+      
+      &:hover {
+        background: rgba(0, 0, 0, 0.6);
+        transform: translateY(-1px);
+      }
+      
+      @media (max-width: 900px) {
+        font-size: 0.85rem;
+        padding: 6px 14px;
+      }
     }
-  }
-  h1 {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin: 0 0 5px 0;
-    font-size: 3rem;
-    font-weight: 700;
-   }
-   .logo-icon {
-    width: 90px;
-    height: 90px;
-    object-fit: contain;
-    border-radius: 100%;
+    
+    .logout-btn {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 8px 20px;
+      border-radius: 40px;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.95rem;
+      font-weight: 500;
+      white-space: nowrap;
+      backdrop-filter: blur(4px);
+      
+      &:hover {
+        background: rgba(229, 62, 62, 0.7);
+        border-color: #e53e3e;
+        transform: translateY(-2px);
+      }
+      
+      @media (max-width: 900px) {
+        font-size: 0.85rem;
+        padding: 6px 16px;
+      }
+    }
   }
 }
 
-  
-    .main {
-      max-width: 1200px;
-      margin: 40px auto;
-      padding: 0 20px;
-  
-      .step-card {
-        background: transparent;
-        border-radius: 20px;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-        overflow: hidden;
-  
-        .navigation {
-          padding: 20px 30px;
-          background: transparent;
-          border-top: 1px solid #e2e8f0;
-          display: flex;
-          justify-content: space-between;
-  
-          button {
-            padding: 10px 30px;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-  
-            &:disabled {
-              opacity: 0.5;
-              cursor: not-allowed;
-            }
-          }
-  
-          .btn-primary {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            &:hover:not(:disabled) {
-              transform: translateY(-2px);
-              box-shadow: 0 5px 15px rgba(102,126,234,0.4);
-            }
-          }
-  
-          .btn-secondary {
-            background: #718096;
-            color: white;
-            &:hover:not(:disabled) {
-              background: #4a5568;
-            }
-          }
-        }
-      }
-    }
-  
-    .modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0,0,0,0.8);
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-  
-      &-content {
-        background: white;
-        border-radius: 20px;
-        width: 90%;
-        max-width: 1000px;
-        max-height: 90vh;
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-  
-        .modal-header {
-          padding: 20px;
-          border-bottom: 1px solid #e2e8f0;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-  
-          .close {
-            background: none;
-            border: none;
-            font-size: 28px;
-            cursor: pointer;
-            color: #718096;
-            &:hover { color: #e53e3e; }
-          }
-        }
-  
-        .modal-body {
-          flex: 1;
-          overflow: auto;
-          padding: 20px;
-  
-          iframe {
-            width: 100%;
-            height: 60vh;
-            border: none;
-            border-radius: 10px;
-          }
-        }
-  
-        .modal-footer {
-          padding: 20px;
-          border-top: 1px solid #e2e8f0;
-          display: flex;
-          justify-content: flex-end;
-          gap: 15px;
-        }
-      }
-    }
-  
-    .loading {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0,0,0,0.7);
-      z-index: 2000;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: white;
-  
-      .spinner {
+// Responsive Header
+@media (max-width: 900px) {
+  .header {
+    padding: 18px 25px;
+    
+    .header-left {
+      gap: 15px;
+      
+      .logo-icon {
         width: 50px;
         height: 50px;
-        border: 3px solid rgba(255,255,255,0.3);
-        border-top-color: white;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
       }
-  
-      p { margin-top: 20px; }
     }
-  
-    .notification {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      padding: 12px 24px;
-      border-radius: 10px;
-      color: white;
-      font-weight: 500;
-      z-index: 3000;
-      animation: slideIn 0.3s;
-  
-      &.success { background: #48bb78; }
-      &.error { background: #f56565; }
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    padding: 20px;
+    gap: 15px;
+    
+    .header-left {
+      flex: auto;
+      width: 100%;
+      justify-content: center;
+      text-align: center;
+      flex-direction: column;
+      gap: 10px;
     }
+    
+    .header-right {
+      flex: auto;
+      width: 100%;
+      justify-content: center;
+      gap: 20px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 15px;
+    
+    .header-left {
+      .logo-icon {
+        width: 45px;
+        height: 45px;
+      }
+      
+      .header-title {
+        h1 {
+          font-size: 1rem;
+        }
+        
+        p {
+          font-size: 0.7rem;
+        }
+      }
+    }
+    
+    .header-right {
+      gap: 12px;
+      
+      .user-name {
+        font-size: 0.75rem;
+        padding: 5px 12px;
+      }
+      
+      .logout-btn {
+        font-size: 0.75rem;
+        padding: 5px 14px;
+      }
+    }
+  }
+}
+
+// ==================== MAIN ====================
+
+.main {
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 0 20px;
+
+  .step-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    .navigation {
+      padding: 20px 30px;
+      background: rgba(0, 0, 0, 0.2);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+
+      button {
+        padding: 10px 25px;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        &:hover:not(:disabled) {
+          transform: translateY(-2px);
+          box-shadow: 0 5px 15px rgba(102,126,234,0.4);
+        }
+      }
+
+      .btn-secondary {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        &:hover:not(:disabled) {
+          background: rgba(255, 255, 255, 0.3);
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .main .step-card .navigation {
+    flex-direction: column;
+    
+    button {
+      width: 100%;
+    }
+  }
+}
+
+// ==================== MODAL ====================
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.8);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+
+  &-content {
+    background: white;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 1000px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    .modal-header {
+      padding: 20px;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .close {
+        background: none;
+        border: none;
+        font-size: 28px;
+        cursor: pointer;
+        color: #718096;
+        &:hover { color: #e53e3e; }
+      }
+    }
+
+    .modal-body {
+      flex: 1;
+      overflow: auto;
+      padding: 20px;
+
+      iframe {
+        width: 100%;
+        height: 60vh;
+        border: none;
+        border-radius: 10px;
+      }
+    }
+
+    .modal-footer {
+      padding: 20px;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: flex-end;
+      gap: 15px;
+    }
+  }
+}
+
+// ==================== LOADING ====================
+
+.loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+
+  .spinner {
+    width: 50px;
+    height: 50px;
+    border: 3px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
   }
 
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-  
-  @keyframes slideIn {
-    from { transform: translateX(100%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
-  }
-  
+  p { margin-top: 20px; }
+}
+
+// ==================== NOTIFICATION ====================
+
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 12px 24px;
+  border-radius: 10px;
+  color: white;
+  font-weight: 500;
+  z-index: 3000;
+  animation: slideIn 0.3s;
+
+  &.success { background: #48bb78; }
+  &.error { background: #f56565; }
+}
+
+// ==================== ANIMATIONS ====================
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}

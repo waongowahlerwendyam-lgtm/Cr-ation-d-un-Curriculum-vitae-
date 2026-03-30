@@ -10,11 +10,14 @@ body {
 }
 
 // Image par défaut (pour tous les écrans)
+
+
 @media (min-width: 800px) {
   body {
     background-image: url("./app/assets/image_back.jpg");
   }
 }
+
 
 // Pour les écrans de 780px et moins
 @media (max-width: 800px) {

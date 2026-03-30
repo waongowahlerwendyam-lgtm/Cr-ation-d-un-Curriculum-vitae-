@@ -14,7 +14,8 @@
       "default",
       {
         "ignore": [
-          "input[type=month]"
+          "input[type=month]",
+          "video[playsinline]"
         ]
       }
     ],

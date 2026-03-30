@@ -1,11 +1,14 @@
 <div class="home-container">
+
     <!-- Video Background -->
     <div class="video-background">
-      <video autoplay muted loop playsinline id="bg-video">
+
+       <video autoplay muted loop playsinline id="bg-video">
         <source src="/assets/video/backgram.mp4" type="video/mp4">
       </video>
-      <div class="video-overlay"></div>
-    </div>
+      <div class="video-overlay"></div> 
+    </div> 
+    
   
     <!-- Main Content -->
     <div class="auth-container">
@@ -19,10 +22,10 @@
         <!-- Tabs: Connexion / Inscription -->
         <div class="tabs">
           <button class="tab" [class.active]="activeTab === 'login'" (click)="activeTab = 'login'">
-            🔐 Connexion
+             Connexion
           </button>
           <button class="tab" [class.active]="activeTab === 'register'" (click)="activeTab = 'register'">
-            ✨ Inscription
+             Inscription
           </button>
         </div>
   

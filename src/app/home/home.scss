@@ -11,6 +11,7 @@
   overflow-x: hidden;
 }
 
+
 // ==================== VIDEO BACKGROUND ====================
 
 .video-background {
@@ -124,8 +125,9 @@
   }
   
   .logo {
-    width: clamp(70px, 16vw, 90px);
-    height: clamp(70px, 16vw, 90px);
+    border-radius: 100%;
+    width: clamp(7px, 20vw, 90px);
+    height: clamp(70px, 20vw, 90px);
     margin-bottom: clamp(15px, 4vw, 20px);
     filter: drop-shadow(0 0 20px rgba(102, 126, 234, 0.4));
     animation: pulse 2s infinite;
@@ -181,7 +183,7 @@
   display: flex;
   gap: clamp(12px, 3vw, 16px);
   margin-bottom: clamp(30px, 7vw, 38px);
-  background: rgba(255, 255, 255, 0.05);
+  background: transparent !important;
   border-radius: 60px;
   padding: 6px;
   backdrop-filter: blur(5px);
@@ -190,7 +192,7 @@
     flex: 1;
     padding: clamp(12px, 3.5vw, 14px) clamp(16px, 4vw, 20px);
     border: none;
-    background: transparent;
+    background: transparent !important;
     color: rgba(255, 255, 255, 0.7);
     font-size: clamp(0.9rem, 3vw, 1rem);
     font-weight: 600;
@@ -497,7 +499,7 @@
 .btn-primary {
   width: 100%;
   padding: clamp(14px, 4vw, 16px);
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: transparent !important;
   border: none;
   border-radius: clamp(14px, 4vw, 16px);
   color: white;
@@ -551,6 +553,7 @@
 // ==================== FOOTER ====================
 
 .footer {
+  border-radius: 15px;
   width: 100%;
   text-align: center;
   padding: clamp(18px, 4vw, 24px);

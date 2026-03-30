@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output, ViewChild, ElementRef, AfterVie
 import { CVData } from '../../models/cv-data.model';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { CvPreviewService } from '../../Service/cv-preview.service';
 
 @Component({
   standalone: true,
@@ -36,10 +37,13 @@ export class StepFinalisationComponent implements AfterViewInit {
   dragStartY = 0;
   croppedImagePreview: string | null = null;
   
-  canvasSize = 300;
+  canvasSize = 400;
   targetSize = 150;
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private previewService: CvPreviewService
+  ) {}
 
   ngAfterViewInit() {
     this.initCanvas();
@@ -104,13 +108,47 @@ export class StepFinalisationComponent implements AfterViewInit {
     return !this.cvData.photo || this.cvData.photo.trim() === '';
   }
 
+  // ==================== ACTIONS CV ====================
+  
+  previewCV() {
+    const previewContent = this.previewService.generateHTML(this.cvData);
+    const previewWindow = window.open('', '_blank');
+    if (previewWindow) {
+      previewWindow.document.write(previewContent);
+      previewWindow.document.close();
+    }
+  }
+
+  printCV() {
+    const printContent = this.previewService.generateHTML(this.cvData);
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {
+      printWindow.document.write(printContent);
+      printWindow.document.close();
+      printWindow.print();
+    }
+  }
+
+  // ==================== GESTION PHOTO ====================
+  
   suggestPhoto() {
+    this.resetImageEditor();
     this.showPhotoModal = true;
   }
 
   closePhotoModal() {
     this.showPhotoModal = false;
     this.resetImageEditor();
+  }
+
+  removePhoto() {
+    if (confirm('Voulez-vous vraiment supprimer votre photo de profil ?')) {
+      this.photoAdded.emit('');
+      this.photoChoice = 'no';
+      this.showPhotoModal = false;
+      this.resetImageEditor();
+      this.cdr.detectChanges();
+    }
   }
 
   openFileSelector() {
@@ -296,6 +334,8 @@ export class StepFinalisationComponent implements AfterViewInit {
       this.photoChoice = 'yes';
       this.showPhotoModal = false;
       this.resetImageEditor();
+    } else if (this.cvData.photo && !this.selectedImage) {
+      this.showPhotoModal = false;
     }
   }
 

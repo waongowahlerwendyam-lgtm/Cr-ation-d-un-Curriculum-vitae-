@@ -1,7 +1,7 @@
 <div class="glass-card">
   <div class="step1">
     <div class="header">
-      <h2>Informations Personnelles</h2>
+      <h2>📋 Informations Personnelles</h2>
       <p>Vos coordonnées de base</p>
     </div>
   
@@ -25,20 +25,65 @@
           <span class="error">{{ getError('email') }}</span>
         </div>
   
-        <div class="field" [class.has-error]="(form.get('telephone')?.touched || showErrors) && form.get('telephone')?.invalid">
+        <div class="field phone-field" [class.has-error]="(form.get('telephone')?.touched || showErrors) && form.get('telephone')?.invalid">
           <label>Téléphone <span class="required">*</span></label>
-          <input formControlName="telephone" placeholder="06 12 34 56 78">
-          <span class="error">{{ getError('telephone') }}</span>
+          <div class="phone-input-group">
+            <div class="country-code-selector" (click)="toggleCountryDropdown($event)">
+              <div class="selected-country">
+                <img [src]="selectedCountry.flag" class="country-flag" [alt]="selectedCountry.name" loading="lazy">
+                <span class="country-code">{{ selectedCountry.dialCode }}</span>
+                <span class="dropdown-arrow">{{ showCountryDropdown ? '▲' : '▼' }}</span>
+              </div>
+              <div class="country-dropdown" *ngIf="showCountryDropdown" (click)="$event.stopPropagation()">
+                <div class="dropdown-search">
+                  <input 
+                    type="text" 
+                    [(ngModel)]="countrySearchTerm" 
+                    (input)="filterCountries()"
+                    placeholder="🔍 Rechercher un pays..."
+                    autocomplete="off"
+                    [ngModelOptions]="{standalone: true}">
+                </div>
+                <div class="dropdown-list">
+                  <div 
+                    *ngFor="let country of filteredCountries.slice(0, 20)" 
+                    class="country-option"
+                    (click)="selectCountry(country)">
+                    <img [src]="country.flag" class="country-flag" [alt]="country.name" loading="lazy">
+                    <span class="country-name">{{ country.name }}</span>
+                    <span class="country-dial">{{ country.dialCode }}</span>
+                    <span class="country-length">{{ country.phoneLength }} chiffres</span>
+                  </div>
+                  <div *ngIf="filteredCountries.length === 0 && !isLoadingCountries" class="no-results">
+                    Aucun pays trouvé
+                  </div>
+                  <div *ngIf="filteredCountries.length > 20" class="more-results">
+                    + {{ filteredCountries.length - 20 }} autres pays...
+                  </div>
+                  <div *ngIf="isLoadingCountries" class="loading-countries">
+                    <div class="spinner-small"></div>
+                    <span>Chargement des pays...</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <input 
+              formControlName="telephone" 
+              type="tel" 
+              [placeholder]="getPlaceholder()"
+              (input)="onPhoneInput($event)">
+          </div>
+          <span class="error">{{ getPhoneError() }}</span>
         </div>
   
         <div class="field">
           <label>Adresse</label>
-          <input formControlName="adresse" placeholder="123 rue de Paris">
+          <input formControlName="adresse" placeholder="123 rue de l'exemple">
         </div>
   
         <div class="field">
           <label>Ville</label>
-          <input formControlName="ville" placeholder="Paris">
+          <input formControlName="ville" placeholder=" Ouahigouya ">
         </div>
   
         <div class="field">
@@ -48,7 +93,7 @@
   
         <div class="field">
           <label>Pays</label>
-          <input formControlName="pays" placeholder="France">
+          <input formControlName="pays" placeholder="Burkina Faso" readonly>
         </div>
   
         <div class="field">

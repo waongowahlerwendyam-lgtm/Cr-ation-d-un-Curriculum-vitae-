@@ -125,14 +125,14 @@
           <!-- Année début -->
           <div class="field-group">
             <label class="field-label">📅 Année de début</label>
-            <input type="text" [(ngModel)]="newFormation.anneeDebut" placeholder="AAAA" maxlength="4">
+            <input type="text" [(ngModel)]="newFormation.anneeDebut" placeholder="année" maxlength="4">
             <span class="error" *ngIf="formErrors.anneeDebut">{{ formErrors.anneeDebut }}</span>
           </div>
           
           <!-- Année fin -->
           <div class="field-group">
             <label class="field-label">📅 Année de fin</label>
-            <input type="text" [(ngModel)]="newFormation.anneeFin" placeholder="AAAA" [disabled]="newFormation.enCours" maxlength="4">
+            <input type="text" [(ngModel)]="newFormation.anneeFin" placeholder="année" [disabled]="newFormation.enCours" maxlength="4">
             <span class="error" *ngIf="formErrors.anneeFin">{{ formErrors.anneeFin }}</span>
           </div>
           

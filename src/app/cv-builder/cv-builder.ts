@@ -274,6 +274,7 @@ export class CvBuilderComponent implements OnInit, OnDestroy {
         this.cvData.personalInfo = info;
       }
       
+      // Vérification des champs obligatoires
       if (!info?.nom || info.nom.toString().trim() === '') {
         this.showNotification('error', '❌ Le nom est requis');
         if (this.step1Component) this.step1Component.showAllErrors();
@@ -298,6 +299,7 @@ export class CvBuilderComponent implements OnInit, OnDestroy {
         return;
       }
       
+      // Validation nom/prénom
       if (info.nom.toString().trim().length < 2) {
         this.showNotification('error', '❌ Le nom doit contenir au moins 2 caractères');
         if (this.step1Component) this.step1Component.showAllErrors();
@@ -310,6 +312,7 @@ export class CvBuilderComponent implements OnInit, OnDestroy {
         return;
       }
       
+      // Validation email
       const emailRegex = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
       if (!emailRegex.test(info.email.toString())) {
         this.showNotification('error', '❌ Email invalide');
@@ -317,18 +320,28 @@ export class CvBuilderComponent implements OnInit, OnDestroy {
         return;
       }
       
-      const cleanPhone = info.telephone.toString().replace(/[\s\-\.]/g, '');
-      if (cleanPhone.length < 9) {
-        this.showNotification('error', '❌ Téléphone invalide (minimum 9 chiffres)');
-        if (this.step1Component) this.step1Component.showAllErrors();
-        return;
-      }
+      // ========== VALIDATION TÉLÉPHONE SELON LE PAYS ==========
+      const selectedCountry = this.step1Component?.selectedCountry;
+      const requiredLength = selectedCountry?.phoneLength || 8;
+      const dialCode = selectedCountry?.dialCode || '+226';
+      const countryName = selectedCountry?.name || 'Burkina Faso';
       
+      const cleanPhone = info.telephone.toString().replace(/[\s\-\.]/g, '');
+      
+      // Vérifier chiffres uniquement
       if (!/^\d+$/.test(cleanPhone)) {
         this.showNotification('error', '❌ Téléphone invalide (uniquement des chiffres)');
         if (this.step1Component) this.step1Component.showAllErrors();
         return;
       }
+      
+      // Vérifier longueur exacte selon le pays
+      if (cleanPhone.length !== requiredLength) {
+        this.showNotification('error', `❌ Téléphone invalide pour ${countryName}. Doit contenir exactement ${requiredLength} chiffres après l'indicatif ${dialCode} (${cleanPhone.length} actuellement)`);
+        if (this.step1Component) this.step1Component.showAllErrors();
+        return;
+      }
+      // ========== FIN VALIDATION TÉLÉPHONE ==========
       
       this.storageService.saveCV(this.cvData);
     }
@@ -350,7 +363,7 @@ export class CvBuilderComponent implements OnInit, OnDestroy {
       this.currentStep++;
     }
   }
-
+  
   previousStep() {
     if (this.currentStep > 1) {
       this.currentStep--;

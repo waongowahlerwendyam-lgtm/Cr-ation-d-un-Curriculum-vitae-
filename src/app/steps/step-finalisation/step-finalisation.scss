@@ -510,6 +510,16 @@
       color: rgba(255, 255, 255, 0.9);
       margin: 0 0 15px 0;
       line-height: 1.5;
+
+      &:hover {
+        color: #06e441 !important;
+        cursor: pointer !important;
+        transform: scale(1.02)  !important; 
+        transition: all 0.2s ease !important;
+
+      }
+      
+      
     }
     
     .modal-tips {
@@ -719,6 +729,7 @@
     
     .upload-icon {
       transform: scale(1.1);
+      cursor: pointer;
     }
   }
   
@@ -726,8 +737,10 @@
     font-size: 2.5rem;
     margin-bottom: 10px;
     transition: transform 0.3s ease;
+    cursor: pointer !important;
   }
   
+
   p {
     margin: 8px 0;
     color: rgba(255, 255, 255, 0.9);
@@ -1096,5 +1109,494 @@
   .image-canvas {
     width: 200px;
     height: 200px;
+  }
+}
+
+// ==================== MODAL LARGE POUR L'ÉDITEUR ====================
+
+.modal-container.modal-large {
+  max-width: 950px;
+  width: 95%;
+  
+  @media (max-width: 900px) {
+    max-width: 95%;
+  }
+  
+  @media (max-width: 768px) {
+    max-width: 95%;
+  }
+}
+
+// ==================== PHOTO EDITOR AMÉLIORÉ ====================
+
+.photo-editor {
+  margin: 15px 0;
+  
+  .editor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+    
+    h4 {
+      margin: 0;
+      color: #ffd700;
+      font-size: 1rem;
+    }
+    
+    .btn-change-image {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+      }
+    }
+  }
+  
+  .editor-container {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    
+    @media (max-width: 700px) {
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .canvas-container {
+      flex: 2;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      
+      .image-canvas {
+        width: 400px;
+        height: 400px;
+        border-radius: 50%;
+        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.4);
+        cursor: grab;
+        user-select: none;
+        display: block;
+        
+        &:active {
+          cursor: grabbing;
+        }
+        
+        @media (max-width: 550px) {
+          width: 280px;
+          height: 280px;
+        }
+        
+        @media (max-width: 400px) {
+          width: 240px;
+          height: 240px;
+        }
+      }
+      
+      .drag-hint {
+        margin-top: 15px;
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.5);
+        text-align: center;
+        background: rgba(0, 0, 0, 0.4);
+        padding: 5px 12px;
+        border-radius: 20px;
+        
+        @media (max-width: 550px) {
+          font-size: 0.65rem;
+        }
+      }
+    }
+    
+    .editor-controls {
+      flex: 1.2;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      
+      .control-group {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 15px;
+        
+        label {
+          display: block;
+          color: rgba(255, 255, 255, 0.8);
+          font-size: 0.85rem;
+          margin-bottom: 12px;
+          font-weight: 500;
+        }
+        
+        .zoom-slider {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          
+          span {
+            color: #ffd700;
+            font-weight: bold;
+            font-size: 1.2rem;
+          }
+          
+          input[type="range"] {
+            flex: 1;
+            height: 4px;
+            -webkit-appearance: none;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            outline: none;
+            
+            &::-webkit-slider-thumb {
+              -webkit-appearance: none;
+              width: 16px;
+              height: 16px;
+              border-radius: 50%;
+              background: #ffd700;
+              cursor: pointer;
+              box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            }
+          }
+        }
+        
+        .zoom-value {
+          margin-top: 8px;
+          color: #ffd700;
+          font-size: 0.8rem;
+          text-align: center;
+        }
+        
+        .action-buttons {
+          display: flex;
+          gap: 12px;
+          flex-wrap: wrap;
+          
+          .action-btn {
+            flex: 1;
+            background: rgba(102, 126, 234, 0.3);
+            border: 1px solid rgba(102, 126, 234, 0.5);
+            color: white;
+            padding: 10px 12px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            
+            &:hover {
+              background: rgba(102, 126, 234, 0.6);
+              transform: translateY(-2px);
+            }
+            
+            span {
+              font-size: 1rem;
+            }
+          }
+        }
+      }
+      
+      .preview-result {
+        text-align: center;
+        padding: 15px;
+        
+        .preview-label {
+          color: rgba(255, 255, 255, 0.6);
+          font-size: 0.75rem;
+          margin-bottom: 8px;
+        }
+        
+        .final-preview {
+          width: 100px;
+          height: 100px;
+          border-radius: 50%;
+          background-size: cover;
+          background-position: center;
+          background-color: rgba(255, 255, 255, 0.1);
+          margin: 0 auto;
+          border: 3px solid #ffd700;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+          transition: all 0.3s ease;
+          
+          @media (max-width: 550px) {
+            width: 80px;
+            height: 80px;
+          }
+        }
+        
+        small {
+          display: block;
+          margin-top: 8px;
+          color: rgba(255, 255, 255, 0.5);
+          font-size: 0.7rem;
+        }
+      }
+    }
+  }
+}
+
+// ==================== PHOTO UPLOAD AREA ====================
+
+.photo-upload-area {
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px dashed rgba(102, 126, 234, 0.5);
+  border-radius: 20px;
+  padding: 50px 30px;
+  margin: 20px 0;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  animation: pulse 2s ease-in-out infinite;
+  
+  &:hover {
+    background: rgba(102, 126, 234, 0.1);
+    border-color: #667eea;
+    transform: translateY(-5px);
+    
+    .upload-icon {
+      transform: scale(1.1);
+    }
+  }
+  
+  .upload-icon {
+    font-size: 4rem;
+    margin-bottom: 15px;
+    transition: transform 0.3s ease;
+  }
+  
+  p {
+    margin: 10px 0;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    font-size: 1rem;
+  }
+  
+  small {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.8rem;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    border-color: rgba(102, 126, 234, 0.5);
+  }
+  50% {
+    border-color: rgba(102, 126, 234, 1);
+  }
+}
+
+// ==================== MODAL FOOTER AMÉLIORÉ ====================
+
+.modal-footer {
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  
+  .btn-modal-skip, .btn-modal-add {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    
+    span {
+      font-size: 1rem;
+    }
+  }
+  
+  .btn-modal-skip {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+  }
+  
+  .btn-modal-add {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+  }
+}
+
+// ==================== RESPONSIVE ====================
+
+@media (max-width: 700px) {
+  .modal-container.modal-large {
+    max-width: 95%;
+    width: 95%;
+  }
+  
+  .photo-editor .editor-header {
+    flex-direction: column;
+    text-align: center;
+    
+    .btn-change-image {
+      width: 100%;
+    }
+  }
+  
+  .photo-editor .editor-container .editor-controls .control-group .action-buttons .action-btn {
+    padding: 8px 12px;
+    font-size: 0.75rem;
+  }
+  
+  .modal-footer {
+    flex-direction: column;
+    
+    .btn-modal-skip, .btn-modal-add {
+      justify-content: center;
+      width: 100%;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .photo-upload-area {
+    padding: 30px 20px;
+    
+    .upload-icon {
+      font-size: 3rem;
+    }
+    
+    p {
+      font-size: 0.85rem;
+    }
+  }
+  
+  .photo-editor .editor-container .canvas-container .image-canvas {
+    width: 240px;
+    height: 240px;
+  }
+}
+// ==================== PHOTO ITEM IN SUMMARY ====================
+
+.summary-item.photo-item {
+  .photo-value {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    
+    .value {
+      color: #ffd700;
+      font-weight: 600;
+      
+      &.missing {
+        color: #ffb347;
+      }
+    }
+    
+    .btn-edit-photo {
+      background: rgba(102, 126, 234, 0.3);
+      border: 1px solid rgba(102, 126, 234, 0.5);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      
+      &:hover {
+        background: rgba(102, 126, 234, 0.6);
+        transform: translateY(-2px);
+      }
+    }
+  }
+}
+
+// ==================== CURRENT PHOTO PREVIEW IN MODAL ====================
+
+.current-photo-preview {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 15px;
+  margin-bottom: 20px;
+  text-align: center;
+  
+  .current-photo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 10px;
+    
+    span {
+      color: #ffd700;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    
+    .btn-remove-photo {
+      background: rgba(229, 62, 62, 0.3);
+      border: 1px solid rgba(229, 62, 62, 0.5);
+      color: #ff6b6b;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      
+      &:hover {
+        background: rgba(229, 62, 62, 0.6);
+        color: white;
+        transform: translateY(-2px);
+      }
+    }
+  }
+  
+  .current-photo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    
+    img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #ffd700;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+  }
+  
+  .change-hint {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.75rem;
+    margin-top: 8px;
   }
 }

@@ -61,11 +61,11 @@
     <div class="actions">
       <h3>Actions</h3>
       <div class="buttons">
-        <button class="btn-preview" (click)="preview.emit()">
+        <button class="btn-preview" (click)="previewCV()">
           👁️ Aperçu du CV
         </button>
-        <button class="btn-print" (click)="print.emit()">
-          ⬇️ Télécharger
+        <button class="btn-print" (click)="printCV()">
+          ⬇️ TELECHARGER PDF
         </button>
         <button class="btn-export" (click)="exportJSON.emit()">
           📥 Exporter en JSON
@@ -103,106 +103,116 @@
           <span class="label">🌍 Langues</span>
           <span class="value">{{ cvData.langues.length || 0 }} langue(s)</span>
         </div>
-        <div class="summary-item">
+        <div class="summary-item photo-item">
           <span class="label">📸 Photo</span>
-          <span class="value" [class.missing]="!cvData.photo">
-            {{ cvData.photo ? '✅ Ajoutée' : '❌ Non ajoutée' }}
-          </span>
+          <div class="photo-value">
+            <span class="value" [class.missing]="!cvData.photo">
+              {{ cvData.photo ? '✅ Ajoutée' : '❌ Non ajoutée' }}
+            </span>
+            <button *ngIf="cvData.photo" class="btn-edit-photo" (click)="suggestPhoto()" title="Modifier la photo">
+              ✏️ Modifier
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Modal avec prévisualisation et recadrage -->
+<!-- Modal pour l'édition de photo - VERSION AGRANDIE -->
 <div class="modal-overlay" *ngIf="showPhotoModal" (click)="closePhotoModal()">
-  <div class="modal-container modal-large" (click)="$event.stopPropagation()">
+  <div class="modal-container modal-large photo-editor-modal" (click)="$event.stopPropagation()">
     <div class="modal-header">
       <span class="modal-icon">📸</span>
-      <h3>Ajouter une photo de profil</h3>
+      <h3>{{ cvData.photo ? 'Modifier votre photo de profil' : 'Ajouter une photo de profil' }}</h3>
       <button class="modal-close" (click)="closePhotoModal()">✕</button>
     </div>
     <div class="modal-body">
-      <p>Une photo professionnelle peut augmenter l'impact de votre CV et le rendre plus personnel.</p>
-      
-      <!-- Étape 1: Sélection de l'image -->
-      <div *ngIf="!selectedImage" class="photo-upload-area" (click)="openFileSelector()">
-        <div class="upload-icon">📷</div>
-        <p>Cliquez pour choisir une photo</p>
-        <small>Format : JPG, PNG (max 5MB)</small>
+      <!-- Aperçu de la photo actuelle si elle existe -->
+      <div *ngIf="cvData.photo && !selectedImage" class="current-photo-preview">
+        <div class="current-photo-header">
+          <span>📷 Photo actuelle</span>
+          <button class="btn-remove-photo" (click)="removePhoto()" title="Supprimer la photo">
+            🗑️ Supprimer
+          </button>
+        </div>
+        <div class="current-photo">
+          <img [src]="cvData.photo" alt="Photo actuelle">
+        </div>
+        <p class="change-hint">Cliquez ci-dessous pour changer de photo</p>
       </div>
       
-      <!-- Étape 2: Prévisualisation et recadrage -->
-      <div *ngIf="selectedImage && originalImage" class="photo-editor">
-        <div class="editor-header">
-          <h4>📐 Recadrer votre photo</h4>
-          <button class="btn-change-image" (click)="resetAndChooseNew()">Changer d'image</button>
+      <div class="photo-editor" *ngIf="!selectedImage">
+        <div class="photo-upload-area" (click)="openFileSelector()">
+          <div class="upload-icon">📷</div>
+          <p>{{ cvData.photo ? 'Cliquez pour changer de photo' : 'Cliquez pour sélectionner une photo' }}</p>
+          <small>Format JPG, PNG (max 5MB)</small>
         </div>
-        
+        <input type="file" #fileInput accept="image/jpeg,image/png,image/jpg" style="display: none" (change)="onPhotoSelected($event)">
+      </div>
+      
+      <div class="photo-editor" *ngIf="selectedImage">
+        <div class="editor-header">
+          <h4>📐 Ajustez votre nouvelle photo</h4>
+          <button class="btn-change-image" (click)="resetAndChooseNew()">⟳ Changer d'image</button>
+        </div>
         <div class="editor-container">
           <div class="canvas-container">
-            <canvas #imageCanvas class="image-canvas" 
-                    width="300"
-                    height="300"
-                    (mousedown)="startDrag($event)"
-                    (mousemove)="onDrag($event)"
-                    (mouseup)="endDrag()"
-                    (mouseleave)="endDrag()"
-                    (wheel)="onZoom($event)">
+            <canvas #imageCanvas 
+                   class="image-canvas"
+                   width="400"
+                   height="400"
+                   (mousedown)="startDrag($event)"
+                   (mousemove)="onDrag($event)"
+                   (mouseup)="endDrag()"
+                   (wheel)="onZoom($event)">
             </canvas>
-            <div class="drag-hint">✋ Glissez pour déplacer</div>
+            <div class="drag-hint">🖱️ Glisser pour déplacer | 🖱️ Molette pour zoomer</div>
           </div>
-          
           <div class="editor-controls">
             <div class="control-group">
               <label>🔍 Zoom</label>
-              <input type="range" 
-                     [(ngModel)]="zoomLevel" 
-                     (input)="updateZoom()"
-                     min="0.5" 
-                     max="2.5" 
-                     step="0.01">
-              <span class="zoom-value">{{ (zoomLevel * 100).toFixed(0) }}%</span>
+              <div class="zoom-slider">
+                <span>-</span>
+                <input type="range" min="0.5" max="2.5" step="0.01" [(ngModel)]="zoomLevel" (input)="updateZoom()">
+                <span>+</span>
+              </div>
+              <div class="zoom-value">{{ (zoomLevel * 100).toFixed(0) }}%</div>
             </div>
             
             <div class="control-group">
-              <label>🎯 Recadrage</label>
-              <div class="crop-buttons">
-                <button class="crop-btn" (click)="resetCrop()" title="Réinitialiser">⟳</button>
-                <button class="crop-btn" (click)="autoFit()" title="Ajuster au cadre">⛶</button>
-                <button class="crop-btn" (click)="rotateImage()" title="Rotation">↻</button>
+              <label>⚡ Actions</label>
+              <div class="action-buttons">
+                <button class="action-btn" (click)="resetCrop()" title="Réinitialiser">
+                  <span>⟲</span> Réinitialiser
+                </button>
+                <button class="action-btn" (click)="rotateImage()" title="Rotation">
+                  <span>↻</span> Rotation
+                </button>
+                <button class="action-btn" (click)="autoFit()" title="Ajuster">
+                  <span>📐</span> Ajuster
+                </button>
               </div>
             </div>
             
-            <div class="preview-result">
-              <div class="preview-label">Aperçu final (150x150px)</div>
-              <div class="final-preview" [style.backgroundImage]="'url(' + croppedImagePreview + ')'"></div>
+            <div class="control-group">
+              <label>📷 Aperçu final</label>
+              <div class="preview-result">
+                <div class="final-preview" [style.backgroundImage]="'url(' + croppedImagePreview + ')'"></div>
+                <small>Nouvelle photo qui apparaîtra sur votre CV</small>
+              </div>
             </div>
           </div>
         </div>
-        
-        <div class="modal-tips">
-          <span class="tip">✨ Photo récente</span>
-          <span class="tip">✨ Fond neutre</span>
-          <span class="tip">✨ Tenue professionnelle</span>
-        </div>
       </div>
-      
-      <input 
-        type="file" 
-        #fileInput 
-        accept="image/jpeg,image/png,image/jpg"
-        (change)="onPhotoSelected($event)"
-        style="display: none">
     </div>
-    <div class="modal-footer" *ngIf="selectedImage && originalImage">
-      <button class="btn-modal-skip" (click)="cancelPhoto()">Annuler</button>
-      <button class="btn-modal-add" (click)="confirmPhoto()">
-        ✅ Valider cette photo
+    <div class="modal-footer">
+      <button class="btn-modal-skip" (click)="closePhotoModal()">
+        <span>❌</span> Annuler
       </button>
-    </div>
-    <div class="modal-footer" *ngIf="!selectedImage">
-      <button class="btn-modal-skip" (click)="skipPhoto()">Non, merci</button>
+      <button class="btn-modal-add" (click)="confirmPhoto()" [disabled]="!selectedImage && !cvData.photo">
+        <span>✅</span> {{ cvData.photo && !selectedImage ? 'Garder cette photo' : 'Valider et ajouter' }}
+      </button>
     </div>
   </div>
 </div>
